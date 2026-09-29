@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Secure Access - Question Paper Generator
+    </title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            color: white;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(61, 174, 233, 0.25),
+                    transparent 28%
+                ),
+
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(245, 166, 35, 0.20),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #07152f,
+                    #0b2450,
+                    #123d78
+                );
+
+        }
+
+
+        /* =====================================
+           BACKGROUND EFFECTS
+        ===================================== */
+
+        .background-glow {
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            filter: blur(80px);
+
+            opacity: 0.35;
+
+            pointer-events: none;
+
+        }
+
+
+        .glow-one {
+
+            top: -180px;
+            left: -150px;
+
+            background: #168bd1;
+
+        }
+
+
+        .glow-two {
+
+            right: -180px;
+            bottom: -170px;
+
+            background: #f5a623;
+
+        }
+
+
+        /* =====================================
+           MAIN
+        ===================================== */
+
+        .page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+
+            position: relative;
+
+        }
+
+
+        .content {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 430px;
+
+            gap: 70px;
+
+            align-items: center;
+
+        }
+
+
+        /* =====================================
+           LEFT SIDE
+        ===================================== */
+
+        .branding {
+
+            padding: 20px;
+
+        }
+
+
+        .university-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding:
+                9px 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            border-radius: 30px;
+
+            background:
+                rgba(255,255,255,0.07);
+
+            backdrop-filter:
+                blur(10px);
+
+            font-size: 12px;
+
+            letter-spacing: 1px;
+
+            text-transform:
+                uppercase;
+
+            color: #dbeaff;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .university-badge span {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #55d98a;
+
+            box-shadow:
+                0 0 12px
+                rgba(85,217,138,0.8);
+
+        }
+
+
+        .branding h1 {
+
+            font-size: 52px;
+
+            line-height: 1.08;
+
+            margin-bottom: 16px;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .branding h1 span {
+
+            display: block;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #74cfff,
+                    #ffd36a
+                );
+
+            -webkit-background-clip:
+                text;
+
+            background-clip:
+                text;
+
+            color:
+                transparent;
+
+        }
+
+
+        .branding p {
+
+            max-width: 600px;
+
+            color:
+                rgba(255,255,255,0.72);
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .feature-row {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 30px;
+
+        }
+
+
+        .feature {
+
+            padding:
+                10px 14px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.06);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
+
+            color:
+                rgba(255,255,255,0.78);
+
+            font-size: 12px;
+
+        }
+
+
+        /* =====================================
+           LOGIN CARD
+        ===================================== */
+
+        .login-card {
+
+            position: relative;
+
+            width: 100%;
+
+            padding: 36px;
+
+            border-radius: 25px;
+
+            background:
+                rgba(255,255,255,0.96);
+
+            color: #172033;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.35);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,0.30);
+
+            backdrop-filter:
+                blur(20px);
+
+            overflow: hidden;
+
+        }
+
+
+        .login-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+
+            height: 5px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #1f4fa3,
+                    #3daee9,
+                    #f5a623
+                );
+
+        }
+
+
+        /* =====================================
+           LOCK ICON
+        ===================================== */
+
+        .lock-icon {
+
+            width: 76px;
+            height: 76px;
+
+            border-radius: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 38px;
+
+            margin-bottom: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8f4ff,
+                    #dbeeff
+                );
+
+            box-shadow:
+                inset 0 0 0 1px
+                rgba(31,79,163,0.06);
+
+        }
+
+
+        .login-card h2 {
+
+            color:
+                #173d82;
+
+            font-size: 29px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .login-subtitle {
+
+            color:
+                #6d7890;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        /* =====================================
+           INPUT
+        ===================================== */
+
+        .input-label {
+
+            display: block;
+
+            color:
+                #273b60;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .password-input {
+
+            width: 100%;
+
+            height: 51px;
+
+            border:
+                1px solid #d6dfeb;
+
+            border-radius: 12px;
+
+            padding:
+                0 50px 0 16px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            color:
+                #172033;
+
+            background:
+                #f9fbfe;
+
+            transition:
+                0.2s;
+
+        }
+
+
+        .password-input:focus {
+
+            border-color:
+                #2788cf;
+
+            background:
+                white;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(39,136,207,0.10);
+
+        }
+
+
+        .password-input::placeholder {
+
+            color:
+                #a0a9b8;
+
+        }
+
+
+        .toggle-password {
+
+            position: absolute;
+
+            right: 10px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            border: none;
+
+            background:
+                transparent;
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            padding: 6px;
+
+            color:
+                #5d7190;
+
+        }
+
+
+        .toggle-password:hover {
+
+            color:
+                #1f4fa3;
+
+        }
+
+
+        /* =====================================
+           LOGIN BUTTON
+        ===================================== */
+
+        .login-btn {
+
+            width: 100%;
+
+            height: 51px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1f4fa3,
+                    #168bd1
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px
+                rgba(31,79,163,0.25);
+
+            transition:
+                0.25s;
+
+        }
+
+
+        .login-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 25px
+                rgba(31,79,163,0.32);
+
+        }
+
+
+        .login-btn:disabled {
+
+            opacity: 0.6;
+
+            cursor:
+                not-allowed;
+
+            transform:
+                none;
+
+        }
+
+
+        /* =====================================
+           FORGOT PASSWORD
+        ===================================== */
+
+        .forgot-link {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 18px;
+
+            color:
+                #1f67a8;
+
+            text-decoration:
+                none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+        }
+
+
+        .forgot-link:hover {
+
+            text-decoration:
+                underline;
+
+        }
+
+
+        /* =====================================
+           ERROR MESSAGE
+        ===================================== */
+
+        #message {
+
+            display: none;
+
+            margin-top: 17px;
+
+            padding:
+                12px 14px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+        }
+
+
+        #message.error {
+
+            display: block;
+
+            background:
+                #fff0f0;
+
+            border:
+                1px solid #f1c7c7;
+
+            color:
+                #a52525;
+
+        }
+
+
+        #message.success {
+
+            display: block;
+
+            background:
+                #eaf8ef;
+
+            border:
+                1px solid #bee5cb;
+
+            color:
+                #19713a;
+
+        }
+
+
+        /* =====================================
+           CARD FOOTER
+        ===================================== */
+
+        .secure-note {
+
+            margin-top: 25px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid #e7ebf2;
+
+            text-align: center;
+
+            color:
+                #8a94a6;
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================
+           BOTTOM BRAND
+        ===================================== */
+
+        .bottom-brand {
+
+            position: fixed;
+
+            bottom: 18px;
+
+            left: 0;
+
+            width: 100%;
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,0.45);
+
+            font-size: 11px;
+
+            pointer-events: none;
+
+        }
+
+
+        /* =====================================
+           RESPONSIVE
+        ===================================== */
+
+        @media (max-width: 900px) {
+
+            body {
+
+                overflow: auto;
+
+            }
+
+
+            .page {
+
+                padding:
+                    30px 18px 70px;
+
+            }
+
+
+            .content {
+
+                grid-template-columns:
+                    1fr;
+
+                gap: 30px;
+
+                max-width: 550px;
+
+            }
+
+
+            .branding {
+
+                text-align: center;
+
+                padding: 0;
+
+            }
+
+
+            .university-badge {
+
+                margin-bottom: 18px;
+
+            }
+
+
+            .branding h1 {
+
+                font-size: 38px;
+
+            }
+
+
+            .branding p {
+
+                margin:
+                    auto;
+
+            }
+
+
+            .feature-row {
+
+                justify-content:
+                    center;
+
+            }
+
+
+            .bottom-brand {
+
+                position: static;
+
+                margin-top: 10px;
+
+                padding-bottom: 15px;
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .branding h1 {
+
+                font-size: 31px;
+
+            }
+
+
+            .branding p {
+
+                font-size: 14px;
+
+            }
+
+
+            .login-card {
+
+                padding:
+                    28px 22px;
+
+                border-radius:
+                    20px;
+
+            }
+
+
+            .login-card h2 {
+
+                font-size: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     BACKGROUND
+===================================== -->
+
+<div class="background-glow glow-one"></div>
+
+<div class="background-glow glow-two"></div>
+
+
+
+<div class="page">
+
+
+    <div class="content">
+
+
+        <!-- =================================
+             BRANDING
+        ================================== -->
+
+        <section class="branding">
+
+
+            <div class="university-badge">
+
+                <span></span>
+
+                Galgotias University
+
+            </div>
+
+
+            <h1>
+
+                Question Paper
+
+                <span>
+                    Generator System
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                A secure academic platform for creating,
+                managing and generating university
+                question papers with an organized
+                digital question bank.
+
+            </p>
+
+
+            <div class="feature-row">
+
+                <div class="feature">
+                    📚 Question Bank
+                </div>
+
+                <div class="feature">
+                    📝 Paper Generator
+                </div>
+
+                <div class="feature">
+                    💾 Secure Database
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             LOGIN
+        ================================== -->
+
+        <section class="login-card">
+
+
+            <div class="lock-icon">
+                🔐
+            </div>
+
+
+            <h2>
+                System Locked
+            </h2>
+
+
+            <p class="login-subtitle">
+
+                Enter your password to securely
+                access the Question Paper Generator
+                System.
+
+            </p>
+
+
+
+            <label
+                class="input-label"
+                for="password"
+            >
+                Website Password
+            </label>
+
+
+            <div class="input-wrapper">
+
+
+                <input
+                    type="password"
+                    id="password"
+                    class="password-input"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                >
+
+
+                <button
+                    type="button"
+                    id="togglePassword"
+                    class="toggle-password"
+                    title="Show password"
+                >
+                    👁
+                </button>
+
+
+            </div>
+
+
+
+            <button
+                type="button"
+                id="loginBtn"
+                class="login-btn"
+            >
+                🔓 Unlock System
+            </button>
+
+
+
+            <a
+                href="forgot-password.html"
+                class="forgot-link"
+            >
+                Forgot Password?
+            </a>
+
+
+
+            <div
+                id="message"
+            ></div>
+
+
+
+            <div class="secure-note">
+
+                🔒 Secure password-protected access
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="bottom-brand">
+
+    © 2026 Galgotias University • Question Paper Generator System
+
+</div>
+
+
+
+<script>
+
+
+// =====================================
+// ELEMENTS
+// =====================================
+
+const passwordInput =
+    document.getElementById(
+        "password"
+    );
+
+
+const loginBtn =
+    document.getElementById(
+        "loginBtn"
+    );
+
+
+const togglePassword =
+    document.getElementById(
+        "togglePassword"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+
+// =====================================
+// SHOW MESSAGE
+// =====================================
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        type;
+
+}
+
+
+
+// =====================================
+// PASSWORD VISIBILITY
+// =====================================
+
+togglePassword.addEventListener(
+    "click",
+    function () {
+
+        if (
+            passwordInput.type ===
+            "password"
+        ) {
+
+            passwordInput.type =
+                "text";
+
+            togglePassword.textContent =
+                "🙈";
+
+            togglePassword.title =
+                "Hide password";
+
+        } else {
+
+            passwordInput.type =
+                "password";
+
+            togglePassword.textContent =
+                "👁";
+
+            togglePassword.title =
+                "Show password";
+
+        }
+
+    }
+);
+
+
+
+// =====================================
+// LOGIN
+// =====================================
+
+async function login() {
+
+
+    const password =
+        passwordInput.value;
+
+
+    if (!password) {
+
+        showMessage(
+            "Please enter your password.",
+            "error"
+        );
+
+        passwordInput.focus();
+
+        return;
+
+    }
+
+
+    loginBtn.disabled =
+        true;
+
+    loginBtn.textContent =
+        "🔄 Verifying...";
+
+
+    message.className =
+        "";
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/api/auth/login",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    credentials:
+                        "include",
+
+                    body:
+                        JSON.stringify({
+                            password:
+                                password
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response
+                .json()
+                .catch(
+                    function () {
+                        return {};
+                    }
+                );
+
+
+        if (
+            response.ok &&
+            data.success
+        ) {
+
+            showMessage(
+                "Access granted. Opening dashboard...",
+                "success"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                },
+                500
+            );
+
+
+            return;
+
+        }
+
+
+        showMessage(
+            data.message ||
+            "Incorrect password.",
+            "error"
+        );
+
+
+        passwordInput.value =
+            "";
+
+        passwordInput.focus();
+
+
+    } catch (error) {
+
+        console.error(
+            "Login Error:",
+            error
+        );
+
+
+        showMessage(
+            "Unable to connect to the server.",
+            "error"
+        );
+
+
+    } finally {
+
+        loginBtn.disabled =
+            false;
+
+        loginBtn.textContent =
+            "🔓 Unlock System";
+
+    }
+
+}
+
+
+
+// =====================================
+// BUTTON CLICK
+// =====================================
+
+loginBtn.addEventListener(
+    "click",
+    login
+);
+
+
+
+// =====================================
+// ENTER KEY
+// =====================================
+
+passwordInput.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            event.preventDefault();
+
+            login();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

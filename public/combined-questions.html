@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Combined Questions | Question Paper Generator</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            min-height: 100vh;
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef4ff 0%,
+                    #f8f5ff 45%,
+                    #eefcf9 100%
+                );
+            color: #1f2937;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ================= HEADER ================= */
+
+        .top-header {
+            width: 100%;
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #7c3aed,
+                    #2563eb
+                );
+            color: white;
+            padding: 18px 35px;
+            box-shadow:
+                0 8px 25px rgba(79, 70, 229, 0.25);
+        }
+
+        .header-inner {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .brand h1 {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .brand p {
+            font-size: 13px;
+            opacity: 0.88;
+            margin-top: 3px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            border: none;
+            padding: 11px 17px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.16);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.28);
+            transform: translateY(-1px);
+        }
+
+        /* ================= MAIN ================= */
+
+        .main-content {
+            width: 100%;
+            flex: 1;
+            padding: 30px 35px 45px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 30px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .page-title p {
+            margin-top: 7px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 11px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .status.info {
+            display: block;
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        /* ================= FILTER GRID ================= */
+
+        .filter-card {
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow:
+                0 10px 35px rgba(31,41,55,0.08);
+            border: 1px solid rgba(226,232,240,0.9);
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .card-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #ddd6fe
+                );
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .card-header p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+            padding: 12px 13px;
+            background: #fff;
+            color: #111827;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6366f1;
+            box-shadow:
+                0 0 0 4px rgba(99,102,241,0.10);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 11px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 11px;
+            padding: 12px 19px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #7c3aed
+                );
+            box-shadow:
+                0 6px 15px rgba(79,70,229,0.22);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-success {
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    #059669,
+                    #10b981
+                );
+        }
+
+        .btn-danger {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        /* ================= INFORMATION ================= */
+
+        .info-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 13px 15px;
+            background: #eef2ff;
+            color: #4338ca;
+            border-radius: 11px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 18px;
+        }
+
+        /* ================= QUESTIONS AREA ================= */
+
+        .content-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.15fr)
+                minmax(350px, 0.85fr);
+            gap: 25px;
+            align-items: start;
+        }
+
+        .questions-card,
+        .combine-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow:
+                0 10px 35px rgba(31,41,55,0.08);
+            border: 1px solid rgba(226,232,240,0.9);
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            max-height: 680px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .question-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 17px;
+            background: #ffffff;
+            transition: 0.2s;
+        }
+
+        .question-card:hover {
+            border-color: #a5b4fc;
+            box-shadow:
+                0 6px 18px rgba(79,70,229,0.08);
+            transform: translateY(-1px);
+        }
+
+        .question-card.selected {
+            border: 2px solid #6366f1;
+            background: #f5f3ff;
+        }
+
+        .question-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .question-number {
+            min-width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #7c3aed
+                );
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .question-text {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.65;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .question-check {
+            width: 20px;
+            height: 20px;
+            accent-color: #4f46e5;
+            cursor: pointer;
+        }
+
+        .question-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 13px;
+            padding-left: 45px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 9px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .tag.type {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .tag.easy {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .tag.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .tag.hard {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag.marks {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 70px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state .empty-icon {
+            font-size: 50px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        .empty-state p {
+            margin-top: 7px;
+            font-size: 13px;
+        }
+
+        /* ================= COMBINE CARD ================= */
+
+        .combine-card {
+            position: sticky;
+            top: 20px;
+        }
+
+        .selected-count {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 11px;
+            border-radius: 9px;
+            background: #ede9fe;
+            color: #6d28d9;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 17px;
+        }
+
+        .selected-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .selected-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            padding: 11px;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .selected-item-number {
+            width: 25px;
+            height: 25px;
+            flex-shrink: 0;
+            border-radius: 7px;
+            background: #6366f1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .combine-form {
+            display: none;
+        }
+
+        .combine-form.active {
+            display: block;
+        }
+
+        .combine-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+            padding: 12px 13px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #6366f1;
+            box-shadow:
+                0 0 0 4px rgba(99,102,241,0.10);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1150px) {
+
+            .filter-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .combine-card {
+                position: static;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .top-header {
+                padding: 15px 18px;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .main-content {
+                padding: 22px 16px 35px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h2 {
+                font-size: 24px;
+            }
+
+            .filter-card,
+            .questions-card,
+            .combine-card {
+                padding: 18px;
+            }
+
+            .question-meta {
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="top-header">
+
+        <div class="header-inner">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    🔗
+                </div>
+
+                <div>
+                    <h1>Question Paper Generator</h1>
+                    <p>Combine existing questions to create advanced questions</p>
+                </div>
+
+            </div>
+
+
+            <div class="header-buttons">
+
+                <button
+                    class="header-btn"
+                    onclick="window.location.href='dashboard.html'"
+                >
+                    🏠 Dashboard
+                </button>
+
+                <button
+                    class="header-btn"
+                    onclick="window.location.href='question-bank.html'"
+                >
+                    📚 Question Bank
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+        <div class="page-title">
+
+            <h2>Combined Questions</h2>
+
+            <p>
+                Select two or more questions and combine them
+                into one advanced question.
+            </p>
+
+        </div>
+
+
+        <div id="statusMessage" class="status"></div>
+
+
+        <!-- ================= FILTER ================= -->
+
+        <div class="filter-card">
+
+            <div class="card-header">
+
+                <div class="card-icon">
+                    🔍
+                </div>
+
+                <div>
+
+                    <h3>Find Questions</h3>
+
+                    <p>
+                        Filter the question bank and select questions
+                        for combination.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="filter-grid">
+
+                <div class="form-group">
+
+                    <label for="semesterFilter">
+                        Semester
+                    </label>
+
+                    <select id="semesterFilter">
+
+                        <option value="">
+                            All Semesters
+                        </option>
+
+                        <option value="1">
+                            Semester 1
+                        </option>
+
+                        <option value="2">
+                            Semester 2
+                        </option>
+
+                        <option value="3">
+                            Semester 3
+                        </option>
+
+                        <option value="4">
+                            Semester 4
+                        </option>
+
+                        <option value="5">
+                            Semester 5
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="subjectFilter">
+                        Subject
+                    </label>
+
+                    <select id="subjectFilter">
+
+                        <option value="">
+                            All Subjects
+                        </option>
+
+                        <option>Linear Algebra</option>
+                        <option>Web Design</option>
+                        <option>Computer System Organisation</option>
+                        <option>Programming for Problem Solving</option>
+                        <option>Report Writing</option>
+
+                        <option>Environmental Literature</option>
+                        <option>Probability</option>
+                        <option>Data Structure</option>
+                        <option>OOPS using C++</option>
+                        <option>Full Stack</option>
+                        <option>Data Base Management System</option>
+
+                        <option>Discrete Mathematics</option>
+                        <option>Python Programming</option>
+                        <option>Digital Marketing</option>
+                        <option>Operating System</option>
+
+                        <option>Machine Learning</option>
+                        <option>Java</option>
+                        <option>Mobile Application</option>
+                        <option>First Aid and Health</option>
+                        <option>Generative AI</option>
+
+                        <option>Computer Networks</option>
+                        <option>Design and Analysis of Algorithms</option>
+                        <option>Social Media Analytics</option>
+                        <option>Software Engineering and Testing</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="typeFilter">
+                        Question Type
+                    </label>
+
+                    <select id="typeFilter">
+
+                        <option value="">
+                            All Types
+                        </option>
+
+                        <option value="MCQ">
+                            MCQ
+                        </option>
+
+                        <option value="Short Answer">
+                            Short Answer
+                        </option>
+
+                        <option value="Long Answer">
+                            Long Answer
+                        </option>
+
+                        <option value="Numerical">
+                            Numerical
+                        </option>
+
+                        <option value="Programming / Code Based">
+                            Programming / Code Based
+                        </option>
+
+                        <option value="Case Study">
+                            Case Study
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="searchInput">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search question..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="button-row">
+
+                <button
+                    class="btn btn-primary"
+                    id="searchBtn"
+                >
+                    🔍 Search
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    id="resetFilterBtn"
+                >
+                    🔄 Reset Filter
+                </button>
+
+                <button
+                    class="btn btn-success"
+                    onclick="window.location.href='create-question.html'"
+                >
+                    ➕ Create Question
+                </button>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>💡</span>
+
+                <span>
+                    Select at least two questions from the list below.
+                    The selected questions can then be combined into
+                    one new question.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content-grid">
+
+            <!-- ================= QUESTIONS ================= -->
+
+            <section class="questions-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        📚
+                    </div>
+
+                    <div>
+
+                        <h3>Available Questions</h3>
+
+                        <p>
+                            Select questions you want to combine.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="questionList"
+                    class="question-list"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ⏳
+                        </div>
+
+                        <h3>
+                            Loading Questions...
+                        </h3>
+
+                        <p>
+                            Please wait.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= COMBINE ================= -->
+
+            <aside class="combine-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        🧩
+                    </div>
+
+                    <div>
+
+                        <h3>Combine Questions</h3>
+
+                        <p>
+                            Create a new question from selected questions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="selectedCount"
+                    class="selected-count"
+                >
+                    0 Questions Selected
+                </div>
+
+
+                <div
+                    id="selectedList"
+                    class="selected-list"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ☑️
+                        </div>
+
+                        <p>
+                            No questions selected yet.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="combineForm"
+                    class="combine-form"
+                >
+
+                    <div class="form-group">
+
+                        <label for="combinedSemester">
+                            Semester
+                        </label>
+
+                        <select id="combinedSemester">
+
+                            <option value="1">
+                                Semester 1
+                            </option>
+
+                            <option value="2">
+                                Semester 2
+                            </option>
+
+                            <option value="3">
+                                Semester 3
+                            </option>
+
+                            <option value="4">
+                                Semester 4
+                            </option>
+
+                            <option value="5">
+                                Semester 5
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedSubject">
+                            Subject
+                        </label>
+
+                        <input
+                            type="text"
+                            id="combinedSubject"
+                            placeholder="Subject"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedSubjectCode">
+                            Subject Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="combinedSubjectCode"
+                            placeholder="Subject Code"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedUnit">
+                            Unit
+                        </label>
+
+                        <select id="combinedUnit">
+
+                            <option value="1">
+                                Unit 1
+                            </option>
+
+                            <option value="2">
+                                Unit 2
+                            </option>
+
+                            <option value="3">
+                                Unit 3
+                            </option>
+
+                            <option value="4">
+                                Unit 4
+                            </option>
+
+                            <option value="5">
+                                Unit 5
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedTopic">
+                            Topic
+                        </label>
+
+                        <input
+                            type="text"
+                            id="combinedTopic"
+                            placeholder="Topic"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedType">
+                            Question Type
+                        </label>
+
+                        <select id="combinedType">
+
+                            <option value="Short Answer">
+                                Short Answer
+                            </option>
+
+                            <option value="Long Answer">
+                                Long Answer
+                            </option>
+
+                            <option value="Numerical">
+                                Numerical
+                            </option>
+
+                            <option value="Programming / Code Based">
+                                Programming / Code Based
+                            </option>
+
+                            <option value="Case Study">
+                                Case Study
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedDifficulty">
+                            Difficulty
+                        </label>
+
+                        <select id="combinedDifficulty">
+
+                            <option value="Easy">
+                                Easy
+                            </option>
+
+                            <option value="Medium" selected>
+                                Medium
+                            </option>
+
+                            <option value="Hard">
+                                Hard
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedMarks">
+                            Marks
+                        </label>
+
+                        <select id="combinedMarks">
+
+                            <option value="2">
+                                2 Marks
+                            </option>
+
+                            <option value="5" selected>
+                                5 Marks
+                            </option>
+
+                            <option value="10">
+                                10 Marks
+                            </option>
+
+                            <option value="15">
+                                15 Marks
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedQuestion">
+                            Combined Question
+                        </label>
+
+                        <textarea
+                            id="combinedQuestion"
+                            placeholder="Combined question will appear here..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="combinedAnswer">
+                            Answer
+                        </label>
+
+                        <textarea
+                            id="combinedAnswer"
+                            placeholder="Enter answer / solution..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            class="btn btn-success"
+                            id="saveCombinedBtn"
+                        >
+                            💾 Save Combined Question
+                        </button>
+
+                        <button
+                            class="btn btn-secondary"
+                            id="clearSelectionBtn"
+                        >
+                            ✖ Clear
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        Question Paper Generator System • Galgotias University
+    </footer>
+
+</div>
+
+
+<script>
+
+    let allQuestions = [];
+
+    let filteredQuestions = [];
+
+    let selectedQuestions = [];
+
+
+    /* ================= STATUS ================= */
+
+    function showStatus(message, type = "info") {
+
+        const status =
+            document.getElementById("statusMessage");
+
+        status.textContent = message;
+
+        status.className =
+            "status " + type;
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* ================= LOAD QUESTIONS ================= */
+
+    async function loadQuestions() {
+
+        try {
+
+            const response =
+                await fetch("/api/questions", {
+                    credentials: "include"
+                });
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    data.error ||
+                    "Unable to load questions."
+                );
+
+            }
+
+
+            if (Array.isArray(data)) {
+
+                allQuestions = data;
+
+            } else if (Array.isArray(data.questions)) {
+
+                allQuestions = data.questions;
+
+            } else {
+
+                allQuestions = [];
+
+            }
+
+
+            filteredQuestions =
+                [...allQuestions];
+
+
+            renderQuestions();
+
+            updateSelectedUI();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            document
+                .getElementById("questionList")
+                .innerHTML = `
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ⚠️
+                        </div>
+
+                        <h3>
+                            Unable to Load Questions
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(error.message)}
+                        </p>
+
+                    </div>
+
+                `;
+
+        }
+
+    }
+
+
+    /* ================= FILTER ================= */
+
+    function applyFilters() {
+
+        const semester =
+            document.getElementById("semesterFilter").value;
+
+        const subject =
+            document.getElementById("subjectFilter").value;
+
+        const type =
+            document.getElementById("typeFilter").value;
+
+        const search =
+            document
+                .getElementById("searchInput")
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        filteredQuestions =
+            allQuestions.filter(question => {
+
+                const questionSemester =
+                    String(
+                        question.semester ??
+                        ""
+                    );
+
+                const questionSubject =
+                    String(
+                        question.subject ??
+                        ""
+                    );
+
+                const questionType =
+                    String(
+                        question.questionType ??
+                        question.type ??
+                        ""
+                    );
+
+                const questionText =
+                    String(
+                        question.question ??
+                        question.text ??
+                        ""
+                    ).toLowerCase();
+
+
+                if (
+                    semester &&
+                    questionSemester !== semester
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    subject &&
+                    questionSubject !== subject
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    type &&
+                    questionType !== type
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    search &&
+                    !questionText.includes(search)
+                ) {
+                    return false;
+                }
+
+
+                return true;
+
+            });
+
+
+        renderQuestions();
+
+    }
+
+
+    /* ================= RENDER QUESTIONS ================= */
+
+    function renderQuestions() {
+
+        const container =
+            document.getElementById("questionList");
+
+
+        if (!filteredQuestions.length) {
+
+            container.innerHTML = `
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🔎
+                    </div>
+
+                    <h3>
+                        No Questions Found
+                    </h3>
+
+                    <p>
+                        Try changing your filters or search text.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            filteredQuestions
+                .map((question, index) => {
+
+                    const id =
+                        String(
+                            question._id ??
+                            question.id ??
+                            ""
+                        );
+
+
+                    const isSelected =
+                        selectedQuestions.some(
+                            selected =>
+                                String(
+                                    selected._id ??
+                                    selected.id ??
+                                    ""
+                                ) === id
+                        );
+
+
+                    const type =
+                        question.questionType ??
+                        question.type ??
+                        "";
+
+
+                    const difficulty =
+                        question.difficulty ??
+                        "";
+
+
+                    const difficultyClass =
+                        difficulty.toLowerCase();
+
+
+                    const marks =
+                        question.marks ??
+                        0;
+
+
+                    return `
+
+                        <div
+                            class="question-card
+                            ${isSelected ? "selected" : ""}"
+                            data-id="${escapeHtml(id)}"
+                        >
+
+                            <div class="question-top">
+
+                                <div class="question-number">
+                                    ${index + 1}
+                                </div>
+
+
+                                <div class="question-text">
+
+                                    ${escapeHtml(
+                                        question.question ??
+                                        question.text ??
+                                        ""
+                                    )}
+
+                                </div>
+
+
+                                <input
+                                    type="checkbox"
+                                    class="question-check"
+                                    data-id="${escapeHtml(id)}"
+                                    ${isSelected ? "checked" : ""}
+                                >
+
+                            </div>
+
+
+                            <div class="question-meta">
+
+                                <span class="tag type">
+                                    ${escapeHtml(type)}
+                                </span>
+
+                                <span class="tag ${escapeHtml(
+                                    difficultyClass
+                                )}">
+                                    ${escapeHtml(difficulty)}
+                                </span>
+
+                                <span class="tag marks">
+                                    ${escapeHtml(
+                                        String(marks)
+                                    )} Marks
+                                </span>
+
+                                <span class="tag">
+                                    Semester ${
+                                        escapeHtml(
+                                            String(
+                                                question.semester ??
+                                                ""
+                                            )
+                                        )
+                                    }
+                                </span>
+
+                                <span class="tag">
+                                    Unit ${
+                                        escapeHtml(
+                                            String(
+                                                question.unit ??
+                                                ""
+                                            )
+                                        )
+                                    }
+                                </span>
+
+                                <span class="tag">
+                                    ${escapeHtml(
+                                        question.subject ??
+                                        ""
+                                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                })
+                .join("");
+
+
+        container
+            .querySelectorAll(".question-check")
+            .forEach(checkbox => {
+
+                checkbox.addEventListener(
+                    "change",
+                    function () {
+
+                        toggleQuestion(
+                            this.dataset.id,
+                            this.checked
+                        );
+
+                    }
+                );
+
+            });
+
+
+        container
+            .querySelectorAll(".question-card")
+            .forEach(card => {
+
+                card.addEventListener(
+                    "click",
+                    function(event) {
+
+                        if (
+                            event.target.tagName ===
+                            "INPUT"
+                        ) {
+                            return;
+                        }
+
+
+                        const checkbox =
+                            this.querySelector(
+                                ".question-check"
+                            );
+
+
+                        checkbox.checked =
+                            !checkbox.checked;
+
+
+                        toggleQuestion(
+                            checkbox.dataset.id,
+                            checkbox.checked
+                        );
+
+                    }
+                );
+
+            });
+
+    }
+
+
+    /* ================= TOGGLE QUESTION ================= */
+
+    function toggleQuestion(id, checked) {
+
+        const question =
+            allQuestions.find(
+                item =>
+                    String(
+                        item._id ??
+                        item.id ??
+                        ""
+                    ) === String(id)
+            );
+
+
+        if (!question) {
+            return;
+        }
+
+
+        if (checked) {
+
+            const alreadySelected =
+                selectedQuestions.some(
+                    item =>
+                        String(
+                            item._id ??
+                            item.id ??
+                            ""
+                        ) === String(id)
+                );
+
+
+            if (!alreadySelected) {
+
+                selectedQuestions.push(
+                    question
+                );
+
+            }
+
+        } else {
+
+            selectedQuestions =
+                selectedQuestions.filter(
+                    item =>
+                        String(
+                            item._id ??
+                            item.id ??
+                            ""
+                        ) !== String(id)
+                );
+
+        }
+
+
+        updateSelectedUI();
+
+        renderQuestions();
+
+    }
+
+
+    /* ================= UPDATE SELECTED ================= */
+
+    function updateSelectedUI() {
+
+        const count =
+            selectedQuestions.length;
+
+
+        document
+            .getElementById("selectedCount")
+            .textContent =
+                count +
+                (
+                    count === 1
+                        ? " Question Selected"
+                        : " Questions Selected"
+                );
+
+
+        const list =
+            document.getElementById("selectedList");
+
+
+        if (!count) {
+
+            list.innerHTML = `
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ☑️
+                    </div>
+
+                    <p>
+                        No questions selected yet.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            document
+                .getElementById("combineForm")
+                .classList.remove("active");
+
+
+            return;
+
+        }
+
+
+        list.innerHTML =
+            selectedQuestions
+                .map((question, index) => `
+
+                    <div class="selected-item">
+
+                        <div class="selected-item-number">
+                            ${index + 1}
+                        </div>
+
+                        <div>
+
+                            ${escapeHtml(
+                                question.question ??
+                                question.text ??
+                                ""
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `)
+                .join("");
+
+
+        if (count >= 2) {
+
+            document
+                .getElementById("combineForm")
+                .classList.add("active");
+
+
+            autoFillCombinedFields();
+
+        } else {
+
+            document
+                .getElementById("combineForm")
+                .classList.remove("active");
+
+        }
+
+    }
+
+
+    /* ================= AUTO FILL ================= */
+
+    function autoFillCombinedFields() {
+
+        if (!selectedQuestions.length) {
+            return;
+        }
+
+
+        const first =
+            selectedQuestions[0];
+
+
+        document
+            .getElementById("combinedSemester")
+            .value =
+                String(
+                    first.semester ??
+                    "1"
+                );
+
+
+        document
+            .getElementById("combinedSubject")
+            .value =
+                first.subject ??
+                "";
+
+
+        document
+            .getElementById("combinedSubjectCode")
+            .value =
+                first.subjectCode ??
+                "";
+
+
+        document
+            .getElementById("combinedUnit")
+            .value =
+                String(
+                    first.unit ??
+                    "1"
+                );
+
+
+        document
+            .getElementById("combinedTopic")
+            .value =
+                first.topic ??
+                "";
+
+
+        const combinedQuestion =
+            selectedQuestions
+                .map(
+                    question =>
+                        question.question ??
+                        question.text ??
+                        ""
+                )
+                .filter(Boolean)
+                .join(" and ");
+
+
+        document
+            .getElementById("combinedQuestion")
+            .value =
+                combinedQuestion;
+
+
+        let answerText =
+            selectedQuestions
+                .map(
+                    question =>
+                        question.answer ??
+                        ""
+                )
+                .filter(Boolean)
+                .join("\n\n");
+
+
+        document
+            .getElementById("combinedAnswer")
+            .value =
+                answerText;
+
+    }
+
+
+    /* ================= SAVE ================= */
+
+    document
+        .getElementById("saveCombinedBtn")
+        .addEventListener(
+            "click",
+            async function () {
+
+                if (
+                    selectedQuestions.length < 2
+                ) {
+
+                    showStatus(
+                        "Please select at least two questions.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                const question =
+                    document
+                        .getElementById(
+                            "combinedQuestion"
+                        )
+                        .value
+                        .trim();
+
+
+                const answer =
+                    document
+                        .getElementById(
+                            "combinedAnswer"
+                        )
+                        .value
+                        .trim();
+
+
+                const semester =
+                    document
+                        .getElementById(
+                            "combinedSemester"
+                        )
+                        .value;
+
+
+                const subject =
+                    document
+                        .getElementById(
+                            "combinedSubject"
+                        )
+                        .value
+                        .trim();
+
+
+                const subjectCode =
+                    document
+                        .getElementById(
+                            "combinedSubjectCode"
+                        )
+                        .value
+                        .trim();
+
+
+                const unit =
+                    document
+                        .getElementById(
+                            "combinedUnit"
+                        )
+                        .value;
+
+
+                const topic =
+                    document
+                        .getElementById(
+                            "combinedTopic"
+                        )
+                        .value
+                        .trim();
+
+
+                const questionType =
+                    document
+                        .getElementById(
+                            "combinedType"
+                        )
+                        .value;
+
+
+                const difficulty =
+                    document
+                        .getElementById(
+                            "combinedDifficulty"
+                        )
+                        .value;
+
+
+                const marks =
+                    Number(
+                        document
+                            .getElementById(
+                                "combinedMarks"
+                            )
+                            .value
+                    );
+
+
+                if (!question) {
+
+                    showStatus(
+                        "Please enter the combined question.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (!answer) {
+
+                    showStatus(
+                        "Please enter the answer.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/questions",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                credentials: "include",
+
+                                body:
+                                    JSON.stringify({
+
+                                        semester:
+                                            Number(
+                                                semester
+                                            ),
+
+                                        subject,
+
+                                        subjectCode,
+
+                                        unit:
+                                            Number(
+                                                unit
+                                            ),
+
+                                        topic,
+
+                                        questionType,
+
+                                        difficulty,
+
+                                        marks,
+
+                                        question,
+
+                                        answer
+
+                                    })
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.message ||
+                            data.error ||
+                            "Unable to save question."
+                        );
+
+                    }
+
+
+                    showStatus(
+                        "Combined question saved successfully.",
+                        "success"
+                    );
+
+
+                    selectedQuestions = [];
+
+
+                    document
+                        .getElementById(
+                            "combinedQuestion"
+                        )
+                        .value = "";
+
+
+                    document
+                        .getElementById(
+                            "combinedAnswer"
+                        )
+                        .value = "";
+
+
+                    document
+                        .getElementById(
+                            "combineForm"
+                        )
+                        .classList.remove(
+                            "active"
+                        );
+
+
+                    updateSelectedUI();
+
+
+                    await loadQuestions();
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    showStatus(
+                        error.message,
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+    /* ================= CLEAR ================= */
+
+    document
+        .getElementById("clearSelectionBtn")
+        .addEventListener(
+            "click",
+            function () {
+
+                selectedQuestions = [];
+
+                updateSelectedUI();
+
+                renderQuestions();
+
+                document
+                    .getElementById(
+                        "combinedQuestion"
+                    )
+                    .value = "";
+
+                document
+                    .getElementById(
+                        "combinedAnswer"
+                    )
+                    .value = "";
+
+            }
+        );
+
+
+    /* ================= SEARCH ================= */
+
+    document
+        .getElementById("searchBtn")
+        .addEventListener(
+            "click",
+            applyFilters
+        );
+
+
+    document
+        .getElementById("searchInput")
+        .addEventListener(
+            "input",
+            applyFilters
+        );
+
+
+    /* ================= RESET FILTER ================= */
+
+    document
+        .getElementById("resetFilterBtn")
+        .addEventListener(
+            "click",
+            function () {
+
+                document
+                    .getElementById(
+                        "semesterFilter"
+                    )
+                    .value = "";
+
+                document
+                    .getElementById(
+                        "subjectFilter"
+                    )
+                    .value = "";
+
+                document
+                    .getElementById(
+                        "typeFilter"
+                    )
+                    .value = "";
+
+                document
+                    .getElementById(
+                        "searchInput"
+                    )
+                    .value = "";
+
+
+                filteredQuestions =
+                    [...allQuestions];
+
+
+                renderQuestions();
+
+            }
+        );
+
+
+    /* ================= ESCAPE HTML ================= */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* ================= START ================= */
+
+    loadQuestions();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Question - Question Paper Generator</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(37, 99, 235, 0.22),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(124, 58, 237, 0.20),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0b1830 48%,
+                    #111827
+                );
+
+            color: #f8fafc;
+
+            padding: 24px;
+        }
+
+
+        .page-container {
+            width: 100%;
+            max-width: 1450px;
+
+            margin: auto;
+        }
+
+
+        /* HEADER */
+
+        .top-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 24px 30px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(30, 64, 175, 0.96),
+                    rgba(76, 29, 149, 0.94)
+                );
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.12);
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.30);
+        }
+
+
+        .university-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+        }
+
+
+        .university-logo {
+
+            width: 62px;
+            height: 62px;
+
+            border-radius: 15px;
+
+            background: rgba(255, 255, 255, 0.95);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.22);
+        }
+
+
+        .university-logo img {
+
+            width: 52px;
+            height: 52px;
+
+            object-fit: contain;
+        }
+
+
+        .university-name {
+
+            font-size: 27px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .system-name {
+
+            margin-top: 5px;
+
+            font-size: 14px;
+
+            color: rgba(255, 255, 255, 0.78);
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .back-btn {
+
+            border: none;
+
+            background:
+                rgba(255, 255, 255, 0.13);
+
+            color: white;
+
+            padding: 13px 20px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.16);
+        }
+
+
+        .back-btn:hover {
+
+            background:
+                rgba(255, 255, 255, 0.23);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* PAGE TITLE */
+
+        .page-heading {
+
+            margin-top: 28px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .page-heading h1 {
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            color: #ffffff;
+        }
+
+
+        .page-heading p {
+
+            margin-top: 7px;
+
+            color: #94a3b8;
+
+            font-size: 14px;
+        }
+
+
+        /* MAIN CARD */
+
+        .form-card {
+
+            background:
+                rgba(15, 23, 42, 0.88);
+
+            border:
+                1px solid
+                rgba(148, 163, 184, 0.13);
+
+            border-radius: 22px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 25px 70px
+                rgba(0, 0, 0, 0.35);
+
+            backdrop-filter: blur(12px);
+        }
+
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 24px;
+
+            padding-bottom: 18px;
+
+            border-bottom:
+                1px solid
+                rgba(148, 163, 184, 0.14);
+        }
+
+
+        .section-icon {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            font-size: 20px;
+        }
+
+
+        .section-title h2 {
+
+            font-size: 19px;
+
+            color: #ffffff;
+        }
+
+
+        .section-title p {
+
+            margin-top: 3px;
+
+            font-size: 12px;
+
+            color: #94a3b8;
+        }
+
+
+        /* FORM GRID */
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .form-group.full {
+
+            grid-column:
+                1 / -1;
+        }
+
+
+        label {
+
+            margin-bottom: 8px;
+
+            color: #cbd5e1;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .required {
+
+            color: #f87171;
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            border: 1px solid
+                rgba(148, 163, 184, 0.22);
+
+            background:
+                rgba(30, 41, 59, 0.75);
+
+            color: #f8fafc;
+
+            border-radius: 11px;
+
+            padding: 13px 14px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: 0.25s;
+        }
+
+
+        input::placeholder,
+        textarea::placeholder {
+
+            color: #64748b;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color: #60a5fa;
+
+            background:
+                rgba(30, 41, 59, 0.95);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(59, 130, 246, 0.12);
+        }
+
+
+        select option {
+
+            background: #0f172a;
+
+            color: white;
+        }
+
+
+        textarea {
+
+            resize: vertical;
+
+            min-height: 145px;
+
+            line-height: 1.6;
+        }
+
+
+        #answer {
+
+            min-height: 190px;
+        }
+
+
+        /* QUESTION SECTION */
+
+        .question-section {
+
+            margin-top: 28px;
+
+            padding-top: 28px;
+
+            border-top:
+                1px solid
+                rgba(148, 163, 184, 0.14);
+        }
+
+
+        .question-label {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+        }
+
+
+        .question-label span {
+
+            font-size: 12px;
+
+            color: #64748b;
+        }
+
+
+        /* ACTIONS */
+
+        .actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 14px;
+
+            margin-top: 30px;
+
+            padding-top: 24px;
+
+            border-top:
+                1px solid
+                rgba(148, 163, 184, 0.14);
+        }
+
+
+        .btn {
+
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+
+        .btn-cancel {
+
+            background:
+                rgba(100, 116, 139, 0.18);
+
+            color: #cbd5e1;
+
+            border:
+                1px solid
+                rgba(148, 163, 184, 0.18);
+        }
+
+
+        .btn-cancel:hover {
+
+            background:
+                rgba(100, 116, 139, 0.30);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .btn-update {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            color: white;
+
+            box-shadow:
+                0 8px 25px
+                rgba(37, 99, 235, 0.25);
+        }
+
+
+        .btn-update:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(37, 99, 235, 0.38);
+        }
+
+
+        .btn-update:disabled {
+
+            opacity: 0.65;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* STATUS */
+
+        #statusMessage {
+
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 13px 16px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        #statusMessage.success {
+
+            display: block;
+
+            background:
+                rgba(34, 197, 94, 0.12);
+
+            border:
+                1px solid
+                rgba(34, 197, 94, 0.25);
+
+            color: #86efac;
+        }
+
+
+        #statusMessage.error {
+
+            display: block;
+
+            background:
+                rgba(239, 68, 68, 0.12);
+
+            border:
+                1px solid
+                rgba(239, 68, 68, 0.25);
+
+            color: #fca5a5;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+
+            .form-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            body {
+
+                padding: 12px;
+            }
+
+
+            .top-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                padding: 20px;
+            }
+
+
+            .university-name {
+
+                font-size: 21px;
+            }
+
+
+            .form-card {
+
+                padding: 20px;
+            }
+
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .actions {
+
+                flex-direction: column-reverse;
+            }
+
+
+            .btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-container">
+
+
+    <!-- HEADER -->
+
+    <header class="top-header">
+
+        <div class="university-title">
+
+            <div class="university-logo">
+
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/Galgotias_University_logo.svg/512px-Galgotias_University_logo.svg.png"
+                    alt="Galgotias University"
+                >
+
+            </div>
+
+
+            <div>
+
+                <div class="university-name">
+                    Galgotias University
+                </div>
+
+                <div class="system-name">
+                    Question Paper Generator System
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="back-btn"
+            onclick="window.location.href='question-bank.html'"
+        >
+            ← Question Bank
+        </button>
+
+    </header>
+
+
+
+    <!-- PAGE HEADING -->
+
+    <div class="page-heading">
+
+        <h1>
+            Edit Question
+        </h1>
+
+        <p>
+            Update the selected question and save the changes to the question bank.
+        </p>
+
+    </div>
+
+
+
+    <!-- FORM CARD -->
+
+    <section class="form-card">
+
+
+        <div class="section-title">
+
+            <div class="section-icon">
+                ✏️
+            </div>
+
+            <div>
+
+                <h2>
+                    Question Details
+                </h2>
+
+                <p>
+                    Modify the information below and update the question.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BASIC DETAILS -->
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label for="semester">
+                    Semester <span class="required">*</span>
+                </label>
+
+                <select id="semester">
+
+                    <option value="">
+                        Select Semester
+                    </option>
+
+                    <option>Semester 1</option>
+                    <option>Semester 2</option>
+                    <option>Semester 3</option>
+                    <option>Semester 4</option>
+                    <option>Semester 5</option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="subject">
+                    Subject <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="subject"
+                    placeholder="Enter subject name"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="subjectCode">
+                    Subject Code
+                </label>
+
+                <input
+                    type="text"
+                    id="subjectCode"
+                    placeholder="Example: BCA204"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="unit">
+                    Unit <span class="required">*</span>
+                </label>
+
+                <select id="unit">
+
+                    <option value="">
+                        Select Unit
+                    </option>
+
+                    <option>Unit 1</option>
+                    <option>Unit 2</option>
+                    <option>Unit 3</option>
+                    <option>Unit 4</option>
+                    <option>Unit 5</option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="topic">
+                    Topic
+                </label>
+
+                <input
+                    type="text"
+                    id="topic"
+                    placeholder="Enter topic"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="questionType">
+                    Question Type <span class="required">*</span>
+                </label>
+
+                <select id="questionType">
+
+                    <option value="">
+                        Select Question Type
+                    </option>
+
+                    <option>MCQ</option>
+                    <option>Short Answer</option>
+                    <option>Long Answer</option>
+                    <option>Numerical</option>
+                    <option>Programming / Code Based</option>
+                    <option>Case Study</option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="difficulty">
+                    Difficulty <span class="required">*</span>
+                </label>
+
+                <select id="difficulty">
+
+                    <option value="">
+                        Select Difficulty
+                    </option>
+
+                    <option>Easy</option>
+                    <option>Medium</option>
+                    <option>Hard</option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="marks">
+                    Marks <span class="required">*</span>
+                </label>
+
+                <select id="marks">
+
+                    <option value="">
+                        Select Marks
+                    </option>
+
+                    <option value="2">2 Marks</option>
+                    <option value="5">5 Marks</option>
+                    <option value="10">10 Marks</option>
+                    <option value="15">15 Marks</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- QUESTION -->
+
+        <div class="question-section">
+
+            <div class="question-label">
+
+                <label for="question">
+                    Question <span class="required">*</span>
+                </label>
+
+                <span>
+                    Enter the complete question
+                </span>
+
+            </div>
+
+
+            <textarea
+                id="question"
+                placeholder="Write the question here..."
+            ></textarea>
+
+        </div>
+
+
+
+        <!-- ANSWER -->
+
+        <div class="question-section">
+
+            <div class="question-label">
+
+                <label for="answer">
+                    Answer / Solution
+                </label>
+
+                <span>
+                    Enter the correct answer or solution
+                </span>
+
+            </div>
+
+
+            <textarea
+                id="answer"
+                placeholder="Write the answer or solution here..."
+            ></textarea>
+
+        </div>
+
+
+
+        <!-- STATUS -->
+
+        <div id="statusMessage"></div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <button
+                class="btn btn-cancel"
+                onclick="window.location.href='question-bank.html'"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                class="btn btn-update"
+                id="updateBtn"
+            >
+                ✓ Update Question
+            </button>
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+
+<script>
+
+
+    /* ================================
+       GET QUESTION ID
+    ================================= */
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const questionId =
+        urlParams.get("id");
+
+
+    if (!questionId) {
+
+        alert(
+            "Question ID not found."
+        );
+
+        window.location.href =
+            "question-bank.html";
+
+    }
+
+
+
+    /* ================================
+       STATUS MESSAGE
+    ================================= */
+
+    function showStatus(
+        message,
+        type
+    ) {
+
+        const status =
+            document.getElementById(
+                "statusMessage"
+            );
+
+
+        status.textContent =
+            message;
+
+
+        status.className =
+            type;
+
+
+        status.style.display =
+            "block";
+
+    }
+
+
+
+    /* ================================
+       LOAD QUESTION
+    ================================= */
+
+    async function loadQuestion() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/questions/" +
+                    questionId
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                showStatus(
+                    result.message ||
+                    "Unable to load question.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const question =
+                result.question;
+
+
+            document.getElementById(
+                "semester"
+            ).value =
+                question.semester || "";
+
+
+            document.getElementById(
+                "subject"
+            ).value =
+                question.subject || "";
+
+
+            document.getElementById(
+                "subjectCode"
+            ).value =
+                question.subjectCode || "";
+
+
+            document.getElementById(
+                "unit"
+            ).value =
+                question.unit || "";
+
+
+            document.getElementById(
+                "topic"
+            ).value =
+                question.topic || "";
+
+
+            document.getElementById(
+                "questionType"
+            ).value =
+                question.questionType || "";
+
+
+            document.getElementById(
+                "difficulty"
+            ).value =
+                question.difficulty || "";
+
+
+            document.getElementById(
+                "marks"
+            ).value =
+                question.marks || "";
+
+
+            document.getElementById(
+                "question"
+            ).value =
+                question.question || "";
+
+
+            document.getElementById(
+                "answer"
+            ).value =
+                question.answer || "";
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            showStatus(
+                "Unable to load question.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+
+    /* ================================
+       UPDATE QUESTION
+    ================================= */
+
+    async function updateQuestion() {
+
+
+        const updateBtn =
+            document.getElementById(
+                "updateBtn"
+            );
+
+
+        const data = {
+
+            semester:
+                document.getElementById(
+                    "semester"
+                ).value,
+
+            subject:
+                document.getElementById(
+                    "subject"
+                ).value,
+
+            subjectCode:
+                document.getElementById(
+                    "subjectCode"
+                ).value.trim(),
+
+            unit:
+                document.getElementById(
+                    "unit"
+                ).value,
+
+            topic:
+                document.getElementById(
+                    "topic"
+                ).value.trim(),
+
+            questionType:
+                document.getElementById(
+                    "questionType"
+                ).value,
+
+            difficulty:
+                document.getElementById(
+                    "difficulty"
+                ).value,
+
+            marks:
+                Number(
+                    document.getElementById(
+                        "marks"
+                    ).value
+                ),
+
+            question:
+                document.getElementById(
+                    "question"
+                ).value.trim(),
+
+            answer:
+                document.getElementById(
+                    "answer"
+                ).value.trim()
+
+        };
+
+
+        /* REQUIRED FIELD VALIDATION */
+
+        if (
+            data.semester === "" ||
+            data.subject === "" ||
+            data.unit === "" ||
+            data.questionType === "" ||
+            data.difficulty === "" ||
+            data.marks === 0 ||
+            data.question === ""
+        ) {
+
+            showStatus(
+                "Please fill all required fields.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+
+        try {
+
+
+            updateBtn.disabled =
+                true;
+
+
+            updateBtn.textContent =
+                "Updating...";
+
+
+            const response =
+                await fetch(
+                    "/api/questions/" +
+                    questionId,
+                    {
+
+                        method: "PUT",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                data
+                            )
+
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                showStatus(
+                    result.message ||
+                    "Unable to update question.",
+                    "error"
+                );
+
+
+                updateBtn.disabled =
+                    false;
+
+
+                updateBtn.textContent =
+                    "✓ Update Question";
+
+
+                return;
+
+            }
+
+
+            showStatus(
+                "Question updated successfully!",
+                "success"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    window.location.href =
+                        "question-bank.html";
+
+                },
+                900
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            showStatus(
+                "Unable to update question.",
+                "error"
+            );
+
+
+            updateBtn.disabled =
+                false;
+
+
+            updateBtn.textContent =
+                "✓ Update Question";
+
+        }
+
+    }
+
+
+
+    /* ================================
+       BUTTON EVENT
+    ================================= */
+
+    document.getElementById(
+        "updateBtn"
+    ).addEventListener(
+        "click",
+        updateQuestion
+    );
+
+
+
+    /* ================================
+       LOAD DATA
+    ================================= */
+
+    loadQuestion();
+
+
+</script>
+
+
+</body>
+
+</html>

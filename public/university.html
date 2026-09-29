@@ -1,0 +1,2441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Galgotias University | University Information</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f6fa;
+            color: #172033;
+            line-height: 1.65;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 5px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .header-inner {
+            width: 100%;
+            min-height: 88px;
+            padding: 12px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .university-logo {
+            width: 210px;
+            max-height: 65px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-text {
+            border-left: 1px solid #d1d5db;
+            padding-left: 18px;
+        }
+
+        .brand-text h1 {
+            font-size: 18px;
+            color: #172033;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        .dashboard-btn {
+            border: none;
+            background: #b0322c;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(176, 50, 44, 0.25);
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 610px;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(
+                    110deg,
+                    rgba(10, 20, 45, 0.96),
+                    rgba(30, 41, 59, 0.86)
+                ),
+                url("https://www.galgotiasuniversity.edu.in/public/uploads/media/GU-INR-LOW.pdf");
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(245, 166, 35, 0.25),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 70%,
+                    rgba(61, 174, 233, 0.25),
+                    transparent 30%
+                );
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 1300px;
+            margin: auto;
+            min-height: 610px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.25);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: clamp(42px, 6vw, 76px);
+            line-height: 1.03;
+            margin-bottom: 22px;
+        }
+
+        .hero h2 span {
+            display: block;
+            background: linear-gradient(
+                90deg,
+                #f5a623,
+                #ffd24d,
+                #3daee9
+            );
+           -webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+        }
+
+        .hero-description {
+            max-width: 700px;
+            font-size: 17px;
+            color: #dbeafe;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            padding: 13px 22px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.25s;
+        }
+
+        .hero-btn.primary {
+            background: #ffffff;
+            color: #b0322c;
+        }
+
+        .hero-btn.secondary {
+            background: rgba(255,255,255,0.12);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-card {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 25px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-card-top {
+            padding: 15px 18px;
+            background: rgba(255,255,255,0.12);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .hero-card iframe {
+            width: 100%;
+            height: 330px;
+            border: none;
+            background: #ffffff;
+        }
+
+        .hero-card-bottom {
+            padding: 18px;
+            font-size: 13px;
+            color: #dbeafe;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: 100%;
+        }
+
+        .section {
+            padding: 75px 5%;
+        }
+
+        .section:nth-child(even) {
+            background: #ffffff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        .section-title {
+            margin-bottom: 38px;
+        }
+
+        .section-title span {
+            color: #b0322c;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: #111827;
+            margin-top: 4px;
+        }
+
+        .section-title p {
+            max-width: 850px;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+            transition: 0.25s;
+        }
+
+        .stat:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .stat h3 {
+            color: #b0322c;
+            font-size: 27px;
+            line-height: 1.2;
+        }
+
+        .stat p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 25px;
+        }
+
+        .about-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.05);
+        }
+
+        .about-card p {
+            color: #475569;
+            margin-bottom: 16px;
+        }
+
+        .about-highlight {
+            background: linear-gradient(
+                135deg,
+                #b0322c,
+                #8f2622
+            );
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 35px;
+        }
+
+        .about-highlight h3 {
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .about-highlight p {
+            color: #fff7f5;
+        }
+
+        /* =========================
+           VISION MISSION
+        ========================= */
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .vision-card {
+            border-radius: 22px;
+            padding: 35px;
+            color: #ffffff;
+            min-height: 240px;
+        }
+
+        .vision-card.vision {
+            background:
+                linear-gradient(
+                    135deg,
+                    #b0322c,
+                    #d24a43
+                );
+        }
+
+        .vision-card.mission {
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d4ed8,
+                    #2563eb
+                );
+        }
+
+        .vision-card h3 {
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .vision-card p {
+            color: #fef2f2;
+        }
+
+        /* =========================
+           MISSION
+        ========================= */
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .mission-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 17px;
+            padding: 23px;
+            transition: 0.25s;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-4px);
+            border-color: #f5a623;
+        }
+
+        .mission-number {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #fff4d6;
+            color: #a16207;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .mission-card h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .mission-card p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =========================
+           BCA
+        ========================= */
+
+        .bca-section {
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #fff7ed
+                );
+        }
+
+        .bca-card {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 40px;
+            border: 1px solid #dbeafe;
+            box-shadow: 0 20px 50px rgba(37,99,235,0.08);
+        }
+
+        .bca-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .bca-top h3 {
+            font-size: 30px;
+            color: #1e3a8a;
+        }
+
+        .bca-badge {
+            padding: 8px 15px;
+            border-radius: 30px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .bca-card > p {
+            color: #475569;
+            margin-bottom: 25px;
+        }
+
+        .bca-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .detail {
+            padding: 18px;
+            border-radius: 14px;
+            background: #f8fafc;
+        }
+
+        .detail small {
+            display: block;
+            color: #64748b;
+            margin-bottom: 3px;
+        }
+
+        .detail strong {
+            color: #172033;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 27px;
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #93c5fd;
+            box-shadow: 0 15px 30px rgba(15,23,42,0.08);
+        }
+
+        .card-icon {
+            font-size: 31px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =========================
+           CAMPUS IMAGE SECTION
+        ========================= */
+
+        .campus-visual {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            grid-template-rows: 220px 220px;
+            gap: 15px;
+        }
+
+        .campus-box {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            background: #e5e7eb;
+            border: 1px solid #dbeafe;
+        }
+
+        .campus-box.large {
+            grid-row: span 2;
+        }
+
+        .campus-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .campus-label {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 17px;
+            color: #ffffff;
+            font-weight: 700;
+            background: linear-gradient(
+                transparent,
+                rgba(0,0,0,0.85)
+            );
+        }
+
+        /* =========================
+           FACILITIES
+        ========================= */
+
+        .facility-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .facility {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .facility-icon {
+            font-size: 31px;
+            margin-bottom: 10px;
+        }
+
+        .facility h3 {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .facility p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESEARCH
+        ========================= */
+
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .research-card {
+            color: #ffffff;
+            padding: 32px;
+            border-radius: 20px;
+            min-height: 210px;
+        }
+
+        .research-card:nth-child(1) {
+            background: linear-gradient(135deg, #0f766e, #0d9488);
+        }
+
+        .research-card:nth-child(2) {
+            background: linear-gradient(135deg, #92400e, #d97706);
+        }
+
+        .research-card:nth-child(3) {
+            background: linear-gradient(135deg, #4338ca, #6366f1);
+        }
+
+        .research-card h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .research-card p {
+            color: #f8fafc;
+        }
+
+        /* =========================
+           SPORTS
+        ========================= */
+
+        .sports-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+        }
+
+        .sport {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px 10px;
+            text-align: center;
+            transition: 0.25s;
+        }
+
+        .sport:hover {
+            transform: translateY(-4px);
+            border-color: #f5a623;
+        }
+
+        .sport div {
+            font-size: 34px;
+            margin-bottom: 7px;
+        }
+
+        .sport strong {
+            font-size: 14px;
+        }
+
+        /* =========================
+           GALLERY
+        ========================= */
+
+        .gallery-note {
+            padding: 20px;
+            margin-bottom: 25px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 15px;
+            color: #9a3412;
+            font-size: 14px;
+        }
+
+        .gallery-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .gallery-btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #b0322c;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .gallery-btn.blue {
+            background: #1d4ed8;
+        }
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .contact-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .contact-icon {
+            min-width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fef2f2;
+            color: #b0322c;
+            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        .contact-item h3 {
+            font-size: 16px;
+        }
+
+        .contact-item p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =========================
+           LINKS
+        ========================= */
+
+        .links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .link-btn {
+            padding: 17px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(
+                135deg,
+                #b0322c,
+                #d24a43
+            );
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(176,50,44,0.25);
+        }
+
+        /* =========================
+           BACK
+        ========================= */
+
+        .back-area {
+            padding: 55px 5%;
+            text-align: center;
+            background: #111827;
+        }
+
+        .back-button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #b0322c;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #020617;
+            color: #94a3b8;
+            text-align: center;
+            padding: 25px;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .hero-inner {
+                grid-template-columns: 1fr;
+                padding: 60px 0;
+                text-align: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mission-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .facility-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sports-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .header-inner {
+                min-height: 75px;
+            }
+
+            .university-logo {
+                width: 155px;
+            }
+
+            .brand-text {
+                display: none;
+            }
+
+            .about-grid,
+            .vision-grid,
+            .contact-grid,
+            .cards,
+            .research-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bca-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .campus-visual {
+                display: block;
+            }
+
+            .campus-box {
+                height: 240px;
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .header-inner {
+                padding: 10px 4%;
+            }
+
+            .university-logo {
+                width: 140px;
+            }
+
+            .dashboard-btn {
+                padding: 9px 12px;
+                font-size: 12px;
+            }
+
+            .hero {
+                min-height: 520px;
+            }
+
+            .hero-inner {
+                min-height: 520px;
+            }
+
+            .hero h2 {
+                font-size: 43px;
+            }
+
+            .section {
+                padding: 50px 5%;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            .stats,
+            .mission-grid,
+            .facility-grid,
+            .bca-details,
+            .sports-grid,
+            .links {
+                grid-template-columns: 1fr;
+            }
+
+            .bca-top {
+                flex-direction: column;
+            }
+
+            .bca-card,
+            .about-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="header">
+
+        <div class="header-inner">
+
+            <div class="brand">
+
+                <img
+                    class="university-logo"
+                    src="https://www.galgotiasuniversity.edu.in/public/uploads/media/6nEZgXfZAHbEKIvU1aAKQW4DT3BzKust4penCoJZ.png"
+                    alt="Galgotias University Logo"
+                >
+
+                <div class="brand-text">
+
+                    <h1>Question Paper Generator System</h1>
+
+                    <p>
+                        University Information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="dashboard-btn"
+                onclick="window.location.href='dashboard.html'"
+            >
+                ← Dashboard
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- =========================
+             HERO
+        ========================= -->
+
+        <section class="hero">
+
+            <div class="hero-inner">
+
+                <div>
+
+                    <div class="hero-badge">
+                        🎓 UNIVERSITY PROFILE
+                    </div>
+
+                    <h2>
+                        Galgotias
+                        <span>University</span>
+                    </h2>
+
+                    <p class="hero-description">
+                        Galgotias University is a multidisciplinary
+                        university located in Greater Noida,
+                        Uttar Pradesh, with academic programmes,
+                        research, innovation and modern campus
+                        facilities.
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <button
+                            class="hero-btn primary"
+                            onclick="document.getElementById('about').scrollIntoView()"
+                        >
+                            Explore University
+                        </button>
+
+
+                        <button
+                            class="hero-btn secondary"
+                            onclick="window.open(
+                                'https://www.galgotiasuniversity.edu.in/',
+                                '_blank'
+                            )"
+                        >
+                            Official Website ↗
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hero-visual">
+
+                    <div class="hero-card">
+
+                        <div class="hero-card-top">
+                            🏫 Official Galgotias University
+                            Campus Information
+                        </div>
+
+                        <iframe
+                            src="https://www.galgotiasuniversity.edu.in/p/infrastructure/campus"
+                            title="Galgotias University Campus"
+                        ></iframe>
+
+                        <div class="hero-card-bottom">
+                            Campus information and facilities
+                            are based on the official university
+                            website.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             STATS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>University at a glance</span>
+
+                    <h2>Key Information</h2>
+
+                    <p>
+                        Important university information in a
+                        simple and professional format.
+                    </p>
+
+                </div>
+
+
+                <div class="stats">
+
+                    <div class="stat">
+
+                        <div class="stat-icon">📅</div>
+
+                        <h3>2011</h3>
+
+                        <p>
+                            Academic operations began during
+                            the 2011–2012 academic session.
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="stat-icon">📍</div>
+
+                        <h3>Greater Noida</h3>
+
+                        <p>
+                            Gautam Buddh Nagar,
+                            Uttar Pradesh.
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="stat-icon">🏫</div>
+
+                        <h3>52 Acres</h3>
+
+                        <p>
+                            Campus situated on the
+                            Yamuna Expressway.
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <div class="stat-icon">🎓</div>
+
+                        <h3>Multi-Disciplinary</h3>
+
+                        <p>
+                            Multiple academic disciplines
+                            and programmes.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ABOUT
+        ========================= -->
+
+        <section
+            class="section"
+            id="about"
+        >
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>About university</span>
+
+                    <h2>About Galgotias University</h2>
+
+                </div>
+
+
+                <div class="about-grid">
+
+                    <div class="about-card">
+
+                        <p>
+                            Galgotias University is located in
+                            Greater Noida, Uttar Pradesh. The
+                            university provides education across
+                            multiple disciplines and promotes
+                            teaching, research, innovation and
+                            practical learning.
+                        </p>
+
+                        <p>
+                            The university began its academic
+                            operations during the 2011–2012
+                            academic session and admitted its
+                            first batch in July 2011.
+                        </p>
+
+                        <p>
+                            Its academic environment combines
+                            classroom education, practical
+                            facilities, research activities,
+                            industry interaction and student
+                            development.
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-highlight">
+
+                        <h3>🌟 Academic Environment</h3>
+
+                        <p>
+                            The university focuses on value-based
+                            education, research, innovation,
+                            outreach and sustainable practices.
+                        </p>
+
+                        <br>
+
+                        <p>
+                            Students get opportunities to
+                            participate in academic, technical,
+                            cultural, sports and innovation
+                            activities.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             VISION MISSION
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Purpose & direction</span>
+
+                    <h2>Vision & Mission</h2>
+
+                </div>
+
+
+                <div class="vision-grid">
+
+                    <div class="vision-card vision">
+
+                        <h3>🎯 Vision</h3>
+
+                        <p>
+                            To be known globally for value based
+                            education, research, innovation,
+                            outreach and sustainable practices.
+                        </p>
+
+                    </div>
+
+
+                    <div class="vision-card mission">
+
+                        <h3>🚀 Mission</h3>
+
+                        <p>
+                            To enable teaching and learning,
+                            establish state-of-the-art facilities,
+                            collaborate with stakeholders,
+                            support societal outreach and
+                            encourage lifelong learning.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MISSION POINTS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Mission framework</span>
+
+                    <h2>Mission Highlights</h2>
+
+                </div>
+
+
+                <div class="mission-grid">
+
+                    <div class="mission-card">
+
+                        <div class="mission-number">
+                            M1
+                        </div>
+
+                        <h3>
+                            Teaching & Learning
+                        </h3>
+
+                        <p>
+                            Enabling a teaching-learning ecosystem
+                            supporting academic success.
+                        </p>
+
+                    </div>
+
+
+                    <div class="mission-card">
+
+                        <div class="mission-number">
+                            M2
+                        </div>
+
+                        <h3>
+                            Modern Facilities
+                        </h3>
+
+                        <p>
+                            Establishing state-of-the-art
+                            facilities for education and research.
+                        </p>
+
+                    </div>
+
+
+                    <div class="mission-card">
+
+                        <div class="mission-number">
+                            M3
+                        </div>
+
+                        <h3>
+                            Industry Collaboration
+                        </h3>
+
+                        <p>
+                            Aligning curriculum and skill
+                            development with stakeholders.
+                        </p>
+
+                    </div>
+
+
+                    <div class="mission-card">
+
+                        <div class="mission-number">
+                            M4
+                        </div>
+
+                        <h3>
+                            Societal Outreach
+                        </h3>
+
+                        <p>
+                            Identifying concerns and developing
+                            sustainable ethical solutions.
+                        </p>
+
+                    </div>
+
+
+                    <div class="mission-card">
+
+                        <div class="mission-number">
+                            M5
+                        </div>
+
+                        <h3>
+                            Lifelong Learning
+                        </h3>
+
+                        <p>
+                            Encouraging lifelong learning and
+                            team-based problem solving.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BCA
+        ========================= -->
+
+        <section class="section bca-section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Academic programme</span>
+
+                    <h2>Bachelor of Computer Applications</h2>
+
+                </div>
+
+
+                <div class="bca-card">
+
+                    <div class="bca-top">
+
+                        <div>
+
+                            <h3>
+                                💻 BCA Programme
+                            </h3>
+
+                            <p>
+                                Department of Computer Applications
+                                and Technology
+                            </p>
+
+                        </div>
+
+
+                        <div class="bca-badge">
+                            UNDERGRADUATE
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        The BCA programme focuses on computer
+                        applications and technology-related
+                        learning. It provides students with
+                        knowledge and practical exposure in
+                        programming, databases, software,
+                        web technologies and modern computing.
+                    </p>
+
+
+                    <div class="bca-details">
+
+                        <div class="detail">
+
+                            <small>
+                                Programme
+                            </small>
+
+                            <strong>
+                                BCA
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <small>
+                                Level
+                            </small>
+
+                            <strong>
+                                Undergraduate
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <small>
+                                Duration
+                            </small>
+
+                            <strong>
+                                3 Years
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <small>
+                                Department
+                            </small>
+
+                            <strong>
+                                Computer Applications
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BCA AREAS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>BCA learning</span>
+
+                    <h2>Key Learning Areas</h2>
+
+                </div>
+
+
+                <div class="cards">
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            💻
+                        </div>
+
+                        <h3>
+                            Programming
+                        </h3>
+
+                        <p>
+                            Programming concepts, algorithms,
+                            problem solving and software development.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🗄️
+                        </div>
+
+                        <h3>
+                            Database Systems
+                        </h3>
+
+                        <p>
+                            Database management, SQL and
+                            data handling concepts.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🌐
+                        </div>
+
+                        <h3>
+                            Web Development
+                        </h3>
+
+                        <p>
+                            Frontend, backend and modern
+                            web application development.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            ⚙️
+                        </div>
+
+                        <h3>
+                            Software Development
+                        </h3>
+
+                        <p>
+                            Software engineering, development
+                            and testing concepts.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🔗
+                        </div>
+
+                        <h3>
+                            Computer Networks
+                        </h3>
+
+                        <p>
+                            Network communication, protocols
+                            and computing systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🤖
+                        </div>
+
+                        <h3>
+                            Emerging Technologies
+                        </h3>
+
+                        <p>
+                            Artificial intelligence, machine
+                            learning and modern technologies.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CAMPUS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Official campus</span>
+
+                    <h2>Campus & Infrastructure</h2>
+
+                    <p>
+                        The official university infrastructure
+                        information includes classrooms, library,
+                        laboratories, hostel, cafeteria, sports
+                        and other campus facilities. 
+                    </p>
+
+                </div>
+
+
+                <div class="campus-visual">
+
+                    <div class="campus-box large">
+
+                        <iframe
+                            src="https://www.galgotiasuniversity.edu.in/p/Details-of-Infrastructure-Facility"
+                            title="Galgotias University Infrastructure"
+                        ></iframe>
+
+                        <div class="campus-label">
+                            🏫 Official University Infrastructure
+                        </div>
+
+                    </div>
+
+
+                    <div class="campus-box">
+
+                        <iframe
+                            src="https://www.galgotiasuniversity.edu.in/p/infrastructure/campus"
+                            title="Galgotias University Campus"
+                        ></iframe>
+
+                        <div class="campus-label">
+                            🌳 University Campus
+                        </div>
+
+                    </div>
+
+
+                    <div class="campus-box">
+
+                        <iframe
+                            src="https://www.galgotiasuniversity.edu.in/p/campus-life/facilities"
+                            title="Galgotias University Facilities"
+                        ></iframe>
+
+                        <div class="campus-label">
+                            📚 Campus Facilities
+                        </div>
+
+                    </div>
+
+
+                    <div class="campus-box">
+
+                        <iframe
+                            src="https://www.galgotiasuniversity.edu.in/p/gallery"
+                            title="Galgotias University Gallery"
+                        ></iframe>
+
+                        <div class="campus-label">
+                            📸 Official Gallery
+                        </div>
+
+                    </div>
+
+
+                    <div class="campus-box">
+
+                        <iframe
+                            src="https://www.galgotiasuniversity.edu.in/p/campus-life/about-the-campus"
+                            title="Galgotias University Campus Life"
+                        ></iframe>
+
+                        <div class="campus-label">
+                            🎓 Campus Life
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FACILITIES
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Campus facilities</span>
+
+                    <h2>Facilities & Resources</h2>
+
+                </div>
+
+
+                <div class="facility-grid">
+
+                    <div class="facility">
+                        <div class="facility-icon">📚</div>
+                        <h3>Central Library</h3>
+                        <p>
+                            Academic resources supporting
+                            learning and research.
+                        </p>
+                    </div>
+
+
+                    <div class="facility">
+                        <div class="facility-icon">🧪</div>
+                        <h3>Laboratories</h3>
+                        <p>
+                            Practical learning facilities
+                            across academic areas.
+                        </p>
+                    </div>
+
+
+                    <div class="facility">
+                        <div class="facility-icon">💻</div>
+                        <h3>Computer Labs</h3>
+                        <p>
+                            Computing facilities for
+                            technology-based education.
+                        </p>
+                    </div>
+
+
+                    <div class="facility">
+                        <div class="facility-icon">🏫</div>
+                        <h3>Classrooms</h3>
+                        <p>
+                            Modern learning spaces and
+                            ICT-enabled classrooms.
+                        </p>
+                    </div>
+
+
+                    <div class="facility">
+                        <div class="facility-icon">🏠</div>
+                        <h3>Hostel</h3>
+                        <p>
+                            Residential facilities for
+                            students.
+                        </p>
+                    </div>
+
+
+                    <div class="facility">
+                        <div class="facility-icon">🍴</div>
+                        <h3>Cafeteria</h3>
+                        <p>
+                            Food and refreshment facilities
+                            within campus.
+                        </p>
+                    </div>
+
+
+                    <div class="facility">
+                        <div class="facility-icon">🏥</div>
+                        <h3>Medical Centre</h3>
+                        <p>
+                            Health and wellness support
+                            for the campus community.
+                        </p>
+                    </div>
+
+
+                    <div class="facility">
+                        <div class="facility-icon">🏋️</div>
+                        <h3>Gym</h3>
+                        <p>
+                            Fitness and recreational
+                            facilities.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             RESEARCH
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Innovation & research</span>
+
+                    <h2>Research & Development</h2>
+
+                </div>
+
+
+                <div class="research-grid">
+
+                    <div class="research-card">
+
+                        <h3>
+                            🔬 Research
+                        </h3>
+
+                        <p>
+                            Research activities encourage
+                            knowledge creation and
+                            interdisciplinary work.
+                        </p>
+
+                    </div>
+
+
+                    <div class="research-card">
+
+                        <h3>
+                            🤖 Artificial Intelligence
+                        </h3>
+
+                        <p>
+                            The university highlights AI and
+                            machine learning research and
+                            industry collaboration.
+                        </p>
+
+                    </div>
+
+
+                    <div class="research-card">
+
+                        <h3>
+                            💡 Innovation
+                        </h3>
+
+                        <p>
+                            Innovation and entrepreneurship
+                            activities support practical
+                            ideas and solutions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             SPORTS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Student activities</span>
+
+                    <h2>Sports Facilities</h2>
+
+                </div>
+
+
+                <div class="sports-grid">
+
+                    <div class="sport">
+                        <div>⚽</div>
+                        <strong>Football</strong>
+                    </div>
+
+                    <div class="sport">
+                        <div>🏏</div>
+                        <strong>Cricket</strong>
+                    </div>
+
+                    <div class="sport">
+                        <div>🏸</div>
+                        <strong>Badminton</strong>
+                    </div>
+
+                    <div class="sport">
+                        <div>🏐</div>
+                        <strong>Volleyball</strong>
+                    </div>
+
+                    <div class="sport">
+                        <div>🏃</div>
+                        <strong>Athletics</strong>
+                    </div>
+
+                    <div class="sport">
+                        <div>🏓</div>
+                        <strong>Table Tennis</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             STUDENT LIFE
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Campus experience</span>
+
+                    <h2>Student Life</h2>
+
+                </div>
+
+
+                <div class="cards">
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🎭
+                        </div>
+
+                        <h3>
+                            Clubs & Societies
+                        </h3>
+
+                        <p>
+                            Student clubs and societies support
+                            interests, skills and teamwork.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🎉
+                        </div>
+
+                        <h3>
+                            Events
+                        </h3>
+
+                        <p>
+                            Academic, cultural and co-curricular
+                            activities are part of campus life.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            💼
+                        </div>
+
+                        <h3>
+                            Career Development
+                        </h3>
+
+                        <p>
+                            Students can participate in skill
+                            development and career activities.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             OFFICIAL GALLERY
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Real university photos</span>
+
+                    <h2>Official Photo Gallery</h2>
+
+                    <p>
+                        These buttons open the official Galgotias
+                        University pages containing real campus,
+                        infrastructure and event photographs.
+                    </p>
+
+                </div>
+
+
+                <div class="gallery-note">
+
+                    <strong>📸 Official Images:</strong>
+
+                    The university's official website contains
+                    photographs of the campus, classrooms,
+                    auditorium, library, hostel, labs, sports
+                    facilities and other infrastructure.
+                </div>
+
+
+                <div class="gallery-actions">
+
+                    <button
+                        class="gallery-btn"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/p/Details-of-Infrastructure-Facility',
+                            '_blank'
+                        )"
+                    >
+                        🏫 Infrastructure Photos
+                    </button>
+
+
+                    <button
+                        class="gallery-btn blue"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/p/gallery',
+                            '_blank'
+                        )"
+                    >
+                        📸 University Gallery
+                    </button>
+
+
+                    <button
+                        class="gallery-btn"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/p/photo-gallery',
+                            '_blank'
+                        )"
+                    >
+                        🎓 Photo Gallery
+                    </button>
+
+
+                    <button
+                        class="gallery-btn blue"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/p/about/virtual-tour',
+                            '_blank'
+                        )"
+                    >
+                        🗺️ Virtual Tour
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONTACT
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>University contact</span>
+
+                    <h2>Contact & Location</h2>
+
+                </div>
+
+
+                <div class="contact-grid">
+
+                    <div class="contact-card">
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                🏛️
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Galgotias University
+                                </h3>
+
+                                <p>
+                                    Greater Noida,
+                                    Uttar Pradesh, India.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                📍
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Address
+                                </h3>
+
+                                <p>
+                                    Plot No. 2, Sector 17-A,
+                                    Yamuna Expressway,
+                                    Opposite Buddha International
+                                    Circuit, Greater Noida,
+                                    Gautam Buddh Nagar,
+                                    Uttar Pradesh - 203201.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-card">
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                🌐
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Official Website
+                                </h3>
+
+                                <p>
+                                    www.galgotiasuniversity.edu.in
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                📧
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Official Contact
+                                </h3>
+
+                                <p>
+                                    registrar@galgotiasuniversity.edu.in
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             OFFICIAL LINKS
+        ========================= -->
+
+        <section class="section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <span>Official resources</span>
+
+                    <h2>University Links</h2>
+
+                </div>
+
+
+                <div class="links">
+
+                    <button
+                        class="link-btn"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/',
+                            '_blank'
+                        )"
+                    >
+                        🌐 Official Website
+                    </button>
+
+
+                    <button
+                        class="link-btn"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/p/programs',
+                            '_blank'
+                        )"
+                    >
+                        🎓 Programmes
+                    </button>
+
+
+                    <button
+                        class="link-btn"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/p/infrastructure/campus',
+                            '_blank'
+                        )"
+                    >
+                        🏫 Campus
+                    </button>
+
+
+                    <button
+                        class="link-btn"
+                        onclick="window.open(
+                            'https://www.galgotiasuniversity.edu.in/p/campus-life/facilities',
+                            '_blank'
+                        )"
+                    >
+                        📚 Facilities
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BACK TO DASHBOARD
+        ========================= -->
+
+        <section class="back-area">
+
+            <button
+                class="back-button"
+                onclick="window.location.href='dashboard.html'"
+            >
+                ← Back to Dashboard
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Galgotias University •
+            Question Paper Generator System
+        </p>
+
+        <p>
+            University information for academic/project use.
+        </p>
+
+    </footer>
+
+</body>
+</html>

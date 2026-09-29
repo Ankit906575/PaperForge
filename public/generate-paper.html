@@ -1,0 +1,2097 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Generate Question Paper | Question Paper Generator</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            background:
+                linear-gradient(135deg, #eef4ff 0%, #f8f5ff 45%, #eefcf9 100%);
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ================= HEADER ================= */
+
+        .top-header {
+            width: 100%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed, #2563eb);
+            color: white;
+            padding: 18px 35px;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.25);
+        }
+
+        .header-inner {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .brand h1 {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .brand p {
+            font-size: 13px;
+            opacity: 0.88;
+            margin-top: 3px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            border: none;
+            padding: 11px 17px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.16);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.28);
+            transform: translateY(-1px);
+        }
+
+        /* ================= MAIN ================= */
+
+        .main-content {
+            width: 100%;
+            flex: 1;
+            padding: 30px 35px 45px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 30px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .page-title p {
+            margin-top: 7px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ================= GRID ================= */
+
+        .content-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(330px, 0.65fr);
+            gap: 25px;
+            align-items: start;
+        }
+
+        .left-section,
+        .right-section {
+            min-width: 0;
+        }
+
+        /* ================= CARD ================= */
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 35px rgba(31, 41, 55, 0.08);
+            border: 1px solid rgba(226,232,240,0.9);
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .card-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            background: linear-gradient(135deg, #eef2ff, #ddd6fe);
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .card-header p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+            padding: 12px 13px;
+            background: #fff;
+            color: #111827;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.10);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* ================= DIFFICULTY ================= */
+
+        .difficulty-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .difficulty-box {
+            padding: 16px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+
+        .difficulty-box.easy {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .difficulty-box.medium {
+            background: #fffbeb;
+            border-color: #fde68a;
+        }
+
+        .difficulty-box.hard {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .difficulty-title {
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .difficulty-box input {
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .percentage-note {
+            margin-top: 12px;
+            padding: 11px 13px;
+            border-radius: 10px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ================= QUESTION TYPE COUNTS ================= */
+
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .type-box {
+            border: 1px solid #e5e7eb;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 13px;
+        }
+
+        .type-box label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .type-box input {
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* ================= RULES ================= */
+
+        .rules {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .rule {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 11px;
+            background: #f8fafc;
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .rule span:first-child {
+            font-size: 16px;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .action-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 11px;
+            padding: 12px 19px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            box-shadow: 0 6px 15px rgba(79,70,229,0.22);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 11px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .status.info {
+            display: block;
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        /* ================= PREVIEW ================= */
+
+        .preview-box {
+            display: none;
+        }
+
+        .preview-box.active {
+            display: block;
+        }
+
+        .paper-preview {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            max-height: 650px;
+            overflow-y: auto;
+        }
+
+        .paper-header {
+            text-align: center;
+            border-bottom: 2px solid #111827;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .paper-header h2 {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .paper-header p {
+            font-size: 12px;
+            color: #4b5563;
+            margin-top: 5px;
+        }
+
+        .paper-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        .paper-meta div {
+            padding: 7px;
+            background: #f8fafc;
+            border-radius: 7px;
+        }
+
+        .question-item {
+            margin-bottom: 17px;
+            padding-bottom: 13px;
+            border-bottom: 1px dashed #d1d5db;
+        }
+
+        .question-number {
+            font-weight: 800;
+            margin-right: 5px;
+        }
+
+        .question-text {
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .question-info {
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 11px;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-preview {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-preview .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .top-header {
+                padding: 15px 18px;
+            }
+
+            .header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .main-content {
+                padding: 22px 16px 35px;
+            }
+
+            .form-grid,
+            .difficulty-grid,
+            .type-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h2 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="top-header">
+        <div class="header-inner">
+
+            <div class="brand">
+                <div class="brand-icon">📝</div>
+
+                <div>
+                    <h1>Question Paper Generator</h1>
+                    <p>Generate professional question papers automatically</p>
+                </div>
+            </div>
+
+            <div class="header-buttons">
+                <button class="header-btn" onclick="window.location.href='dashboard.html'">
+                    🏠 Dashboard
+                </button>
+
+                <button class="header-btn" onclick="window.location.href='question-bank.html'">
+                    📚 Question Bank
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+        <div class="page-title">
+            <h2>Generate Question Paper</h2>
+            <p>
+                Select subject, difficulty distribution and question pattern
+                to automatically generate a complete question paper.
+            </p>
+        </div>
+
+
+        <div id="statusMessage" class="status"></div>
+
+
+        <div class="content-grid">
+
+            <!-- ================= LEFT ================= -->
+
+            <section class="left-section">
+
+                <!-- PAPER DETAILS -->
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="card-icon">📋</div>
+
+                        <div>
+                            <h3>Paper Details</h3>
+                            <p>Enter the basic information for the question paper.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="semester">Semester</label>
+
+                            <select id="semester">
+                                <option value="">Select Semester</option>
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3</option>
+                                <option value="4">Semester 4</option>
+                                <option value="5">Semester 5</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+
+                            <select id="subject">
+                                <option value="">Select Subject</option>
+
+                                <option>Linear Algebra</option>
+                                <option>Web Design</option>
+                                <option>Computer System Organisation</option>
+                                <option>Programming for Problem Solving</option>
+                                <option>Report Writing</option>
+
+                                <option>Environmental Literature</option>
+                                <option>Probability</option>
+                                <option>Data Structure</option>
+                                <option>OOPS using C++</option>
+                                <option>Full Stack</option>
+                                <option>Data Base Management System</option>
+
+                                <option>Discrete Mathematics</option>
+                                <option>Python Programming</option>
+                                <option>Digital Marketing</option>
+                                <option>Operating System</option>
+
+                                <option>Machine Learning</option>
+                                <option>Java</option>
+                                <option>Mobile Application</option>
+                                <option>First Aid and Health</option>
+                                <option>Generative AI</option>
+
+                                <option>Computer Networks</option>
+                                <option>Design and Analysis of Algorithms</option>
+                                <option>Social Media Analytics</option>
+                                <option>Software Engineering and Testing</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="subjectCode">Subject Code</label>
+
+                            <input
+                                type="text"
+                                id="subjectCode"
+                                placeholder="Example: E1UA204C"
+                            >
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="academicSession">Academic Session</label>
+
+                            <input
+                                type="text"
+                                id="academicSession"
+                                placeholder="Example: 2026-27"
+                            >
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="duration">Duration</label>
+
+                            <input
+                                type="text"
+                                id="duration"
+                                value="3 Hours"
+                            >
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="maximumMarks">Maximum Marks</label>
+
+                            <input
+                                type="number"
+                                id="maximumMarks"
+                                value="100"
+                            >
+                        </div>
+
+
+                        <div class="form-group full">
+                            <label for="paperName">Paper Name</label>
+
+                            <input
+                                type="text"
+                                id="paperName"
+                                placeholder="Example: BCA Semester Examination"
+                            >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DIFFICULTY -->
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+
+                        <div>
+                            <h3>Difficulty Distribution</h3>
+                            <p>Set the percentage of Easy, Medium and Hard questions.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="difficulty-grid">
+
+                        <div class="difficulty-box easy">
+                            <div class="difficulty-title">
+                                🟢 Easy (%)
+                            </div>
+
+                            <input
+                                type="number"
+                                id="easyPercentage"
+                                value="30"
+                                min="0"
+                                max="100"
+                            >
+                        </div>
+
+
+                        <div class="difficulty-box medium">
+                            <div class="difficulty-title">
+                                🟡 Medium (%)
+                            </div>
+
+                            <input
+                                type="number"
+                                id="mediumPercentage"
+                                value="40"
+                                min="0"
+                                max="100"
+                            >
+                        </div>
+
+
+                        <div class="difficulty-box hard">
+                            <div class="difficulty-title">
+                                🔴 Hard (%)
+                            </div>
+
+                            <input
+                                type="number"
+                                id="hardPercentage"
+                                value="30"
+                                min="0"
+                                max="100"
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <div class="percentage-note" id="percentageTotal">
+                        Total: 100%
+                    </div>
+
+                </div>
+
+
+                <!-- SUBJECTIVE PATTERN -->
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="card-icon">📚</div>
+
+                        <div>
+                            <h3>Subjective Question Pattern</h3>
+                            <p>Choose how many questions should be generated.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="type-grid">
+
+                        <div class="type-box">
+                            <label for="shortAnswerCount">
+                                Short Answer Questions
+                            </label>
+
+                            <input
+                                type="number"
+                                id="shortAnswerCount"
+                                value="5"
+                                min="0"
+                            >
+                        </div>
+
+
+                        <div class="type-box">
+                            <label for="longAnswerCount">
+                                Long Answer Questions
+                            </label>
+
+                            <input
+                                type="number"
+                                id="longAnswerCount"
+                                value="5"
+                                min="0"
+                            >
+                        </div>
+
+
+                        <div class="type-box">
+                            <label for="numericalCount">
+                                Numerical Questions
+                            </label>
+
+                            <input
+                                type="number"
+                                id="numericalCount"
+                                value="0"
+                                min="0"
+                            >
+                        </div>
+
+
+                        <div class="type-box">
+                            <label for="programmingCount">
+                                Programming / Code Based
+                            </label>
+
+                            <input
+                                type="number"
+                                id="programmingCount"
+                                value="0"
+                                min="0"
+                            >
+                        </div>
+
+
+                        <div class="type-box">
+                            <label for="caseStudyCount">
+                                Case Study
+                            </label>
+
+                            <input
+                                type="number"
+                                id="caseStudyCount"
+                                value="0"
+                                min="0"
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <div class="action-row">
+
+                        <button
+                            class="btn btn-primary"
+                            id="generateBtn"
+                        >
+                            ⚡ Generate Question Paper
+                        </button>
+
+                        <button
+                            class="btn btn-secondary"
+                            id="resetBtn"
+                        >
+                            🔄 Reset
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RULES -->
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="card-icon">⚙️</div>
+
+                        <div>
+                            <h3>Generation Rules</h3>
+                            <p>Rules applied automatically by the system.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="rules">
+
+                        <div class="rule">
+                            <span>✅</span>
+                            <span>
+                                Questions are selected automatically from the question bank.
+                            </span>
+                        </div>
+
+                        <div class="rule">
+                            <span>✅</span>
+                            <span>
+                                Questions are selected according to the selected difficulty percentage.
+                            </span>
+                        </div>
+
+                        <div class="rule">
+                            <span>✅</span>
+                            <span>
+                                Previously used questions are avoided whenever sufficient unused questions are available.
+                            </span>
+                        </div>
+
+                        <div class="rule">
+                            <span>✅</span>
+                            <span>
+                                Duplicate questions are not allowed within the generated paper.
+                            </span>
+                        </div>
+
+                        <div class="rule">
+                            <span>✅</span>
+                            <span>
+                                The generated paper can be saved, printed or downloaded as PDF.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= RIGHT ================= -->
+
+            <aside class="right-section">
+
+                <div class="card preview-box" id="previewCard">
+
+                    <div class="card-header">
+                        <div class="card-icon">👁️</div>
+
+                        <div>
+                            <h3>Paper Preview</h3>
+                            <p>Preview your generated question paper.</p>
+                        </div>
+                    </div>
+
+
+                    <div id="paperPreview" class="paper-preview">
+                    </div>
+
+
+                    <div class="action-row">
+
+                        <button
+                            class="btn btn-success"
+                            id="savePaperBtn"
+                        >
+                            💾 Save Paper
+                        </button>
+
+                        <button
+                            class="btn btn-primary"
+                            id="downloadPdfBtn"
+                        >
+                            📄 Download PDF
+                        </button>
+
+                        <button
+                            class="btn btn-secondary"
+                            id="printBtn"
+                        >
+                            🖨️ Print
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card" id="emptyCard">
+
+                    <div class="empty-preview">
+
+                        <div class="icon">📝</div>
+
+                        <h3>No Paper Generated</h3>
+
+                        <p style="margin-top:8px;">
+                            Fill the paper details and click
+                            <b>Generate Question Paper</b>.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        Question Paper Generator System • Galgotias University
+    </footer>
+
+</div>
+
+
+<script>
+
+    let generatedPaper = null;
+
+
+    /* ================= STATUS ================= */
+
+    function showStatus(message, type = "info") {
+
+        const status = document.getElementById("statusMessage");
+
+        status.textContent = message;
+        status.className = "status " + type;
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    /* ================= DIFFICULTY TOTAL ================= */
+
+    function updatePercentage() {
+
+        const easy =
+            Number(document.getElementById("easyPercentage").value) || 0;
+
+        const medium =
+            Number(document.getElementById("mediumPercentage").value) || 0;
+
+        const hard =
+            Number(document.getElementById("hardPercentage").value) || 0;
+
+        const total = easy + medium + hard;
+
+        const box = document.getElementById("percentageTotal");
+
+        box.textContent = "Total: " + total + "%";
+
+        if (total === 100) {
+            box.style.background = "#dcfce7";
+            box.style.color = "#166534";
+        } else {
+            box.style.background = "#fee2e2";
+            box.style.color = "#991b1b";
+        }
+    }
+
+
+    document
+        .getElementById("easyPercentage")
+        .addEventListener("input", updatePercentage);
+
+    document
+        .getElementById("mediumPercentage")
+        .addEventListener("input", updatePercentage);
+
+    document
+        .getElementById("hardPercentage")
+        .addEventListener("input", updatePercentage);
+
+
+    /* ================= GENERATE ================= */
+
+    document
+        .getElementById("generateBtn")
+        .addEventListener("click", async function () {
+
+            const semester =
+                document.getElementById("semester").value;
+
+            const subject =
+                document.getElementById("subject").value;
+
+            const subjectCode =
+                document.getElementById("subjectCode").value.trim();
+
+            const academicSession =
+                document.getElementById("academicSession").value.trim();
+
+            const duration =
+                document.getElementById("duration").value.trim();
+
+            const maximumMarks =
+                Number(document.getElementById("maximumMarks").value);
+
+            const paperName =
+                document.getElementById("paperName").value.trim();
+
+
+            const easyPercentage =
+                Number(document.getElementById("easyPercentage").value) || 0;
+
+            const mediumPercentage =
+                Number(document.getElementById("mediumPercentage").value) || 0;
+
+            const hardPercentage =
+                Number(document.getElementById("hardPercentage").value) || 0;
+
+
+            const shortAnswerCount =
+                Number(document.getElementById("shortAnswerCount").value) || 0;
+
+            const longAnswerCount =
+                Number(document.getElementById("longAnswerCount").value) || 0;
+
+            const numericalCount =
+                Number(document.getElementById("numericalCount").value) || 0;
+
+            const programmingCount =
+                Number(document.getElementById("programmingCount").value) || 0;
+
+            const caseStudyCount =
+                Number(document.getElementById("caseStudyCount").value) || 0;
+
+
+            if (!semester) {
+                showStatus("Please select semester.", "error");
+                return;
+            }
+
+            if (!subject) {
+                showStatus("Please select subject.", "error");
+                return;
+            }
+
+            if (!subjectCode) {
+                showStatus("Please enter subject code.", "error");
+                return;
+            }
+
+            if (!academicSession) {
+                showStatus("Please enter academic session.", "error");
+                return;
+            }
+
+            if (!paperName) {
+                showStatus("Please enter paper name.", "error");
+                return;
+            }
+
+
+            const difficultyTotal =
+                easyPercentage +
+                mediumPercentage +
+                hardPercentage;
+
+
+            if (difficultyTotal !== 100) {
+                showStatus(
+                    "Easy + Medium + Hard percentage must be exactly 100%.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const totalQuestions =
+                shortAnswerCount +
+                longAnswerCount +
+                numericalCount +
+                programmingCount +
+                caseStudyCount;
+
+
+            if (totalQuestions === 0) {
+
+                showStatus(
+                    "Please select at least one question.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            showStatus(
+                "Generating question paper...",
+                "info"
+            );
+
+
+            const requestData = {
+
+    semester: Number(semester),
+
+    subject,
+
+    subjectCode,
+
+    academicSession,
+
+    duration,
+
+    maximumMarks,
+
+    paperName,
+
+    easyPercentage: easyPercentage,
+
+    mediumPercentage: mediumPercentage,
+
+    hardPercentage: hardPercentage,
+
+    shortAnswerCount: shortAnswerCount,
+
+    longAnswerCount: longAnswerCount,
+
+    numericalCount: numericalCount,
+
+    programmingCount: programmingCount,
+
+    caseStudyCount: caseStudyCount
+
+};
+
+            try {
+
+                const response =
+                    await fetch("/api/generate-paper", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        credentials: "include",
+
+                        body: JSON.stringify(requestData)
+                    });
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        data.error ||
+                        "Unable to generate question paper."
+                    );
+                }
+
+
+                generatedPaper =
+                    data.paper || data;
+
+
+                renderPaper(generatedPaper);
+
+
+                document
+                    .getElementById("previewCard")
+                    .classList.add("active");
+
+
+                document
+                    .getElementById("emptyCard")
+                    .style.display = "none";
+
+
+                showStatus(
+                    "Question paper generated successfully.",
+                    "success"
+                );
+
+
+                document
+                    .getElementById("previewCard")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showStatus(
+                    error.message,
+                    "error"
+                );
+            }
+
+        });
+
+
+    /* ================= RENDER PAPER ================= */
+
+    function renderPaper(paper) {
+
+        const preview =
+            document.getElementById("paperPreview");
+
+
+        const questions =
+            paper.questions || [];
+
+
+        let html = `
+
+            <div class="paper-header">
+
+                <h2>
+                    ${escapeHtml(
+                        paper.paperName ||
+                        "Question Paper"
+                    )}
+                </h2>
+
+                <p>
+                    Galgotias University
+                </p>
+
+                <p>
+                    ${escapeHtml(
+                        paper.subject || ""
+                    )}
+                </p>
+
+            </div>
+
+
+            <div class="paper-meta">
+
+                <div>
+                    <b>Semester:</b>
+                    ${escapeHtml(
+                        String(paper.semester || "")
+                    )}
+                </div>
+
+                <div>
+                    <b>Subject Code:</b>
+                    ${escapeHtml(
+                        paper.subjectCode || ""
+                    )}
+                </div>
+
+                <div>
+                    <b>Duration:</b>
+                    ${escapeHtml(
+                        paper.duration || "3 Hours"
+                    )}
+                </div>
+
+                <div>
+                    <b>Maximum Marks:</b>
+                    ${escapeHtml(
+                        String(paper.maximumMarks || 100)
+                    )}
+                </div>
+
+                <div>
+                    <b>Academic Session:</b>
+                    ${escapeHtml(
+                        paper.academicSession || ""
+                    )}
+                </div>
+
+                <div>
+                    <b>Total Questions:</b>
+                    ${questions.length}
+                </div>
+
+            </div>
+
+        `;
+
+
+        if (questions.length === 0) {
+
+            html += `
+                <div class="empty-preview">
+                    No questions found.
+                </div>
+            `;
+
+        } else {
+
+            questions.forEach((question, index) => {
+
+                html += `
+
+                    <div class="question-item">
+
+                        <div class="question-text">
+
+                            <span class="question-number">
+                                ${index + 1}.
+                            </span>
+
+                            ${escapeHtml(
+                                question.question ||
+                                question.text ||
+                                ""
+                            )}
+
+                        </div>
+
+                        <div class="question-info">
+
+                            ${escapeHtml(
+                                question.type ||
+                                question.questionType ||
+                                ""
+                            )}
+
+                            &nbsp; • &nbsp;
+
+                            ${escapeHtml(
+                                question.difficulty ||
+                                ""
+                            )}
+
+                            &nbsp; • &nbsp;
+
+                            ${question.marks || 0} Marks
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
+        }
+
+
+        preview.innerHTML = html;
+    }
+
+
+    /* ================= SAVE PAPER ================= */
+
+    document
+        .getElementById("savePaperBtn")
+        .addEventListener("click", async function () {
+
+            if (!generatedPaper) {
+
+                showStatus(
+                    "Please generate a paper first.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch("/api/save-paper", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        credentials: "include",
+
+                        body: JSON.stringify({
+
+                            paperName:
+                                generatedPaper.paperName ||
+                                document.getElementById("paperName").value,
+
+                            subject:
+                                generatedPaper.subject ||
+                                document.getElementById("subject").value,
+
+                            semester:
+                                Number(
+                                    generatedPaper.semester ||
+                                    document.getElementById("semester").value
+                                ),
+
+                            subjectCode:
+                                generatedPaper.subjectCode ||
+                                document.getElementById("subjectCode").value,
+
+                            academicSession:
+                                generatedPaper.academicSession ||
+                                document.getElementById("academicSession").value,
+
+                            duration:
+                                generatedPaper.duration ||
+                                document.getElementById("duration").value,
+
+                            maximumMarks:
+                                generatedPaper.maximumMarks ||
+                                Number(
+                                    document.getElementById("maximumMarks").value
+                                ),
+
+                            questions:
+                                generatedPaper.questions || []
+
+                        })
+
+                    });
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        data.error ||
+                        "Unable to save paper."
+                    );
+                }
+
+
+                showStatus(
+                    "Question paper saved successfully.",
+                    "success"
+                );
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showStatus(
+                    error.message,
+                    "error"
+                );
+            }
+
+        });
+
+
+    /* ================= PDF ================= */
+
+    document
+        .getElementById("downloadPdfBtn")
+        .addEventListener("click", function () {
+
+            if (!generatedPaper) {
+
+                showStatus(
+                    "Please generate a paper first.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const {
+                jsPDF
+            } = window.jspdf;
+
+
+            const doc =
+                new jsPDF();
+
+
+            const paper =
+                generatedPaper;
+
+
+            let y = 20;
+
+
+            doc.setFontSize(16);
+
+            doc.setFont("helvetica", "bold");
+
+            doc.text(
+                "GALgotias University",
+                105,
+                y,
+                {
+                    align: "center"
+                }
+            );
+
+
+            y += 10;
+
+
+            doc.setFontSize(13);
+
+            doc.text(
+                paper.paperName || "Question Paper",
+                105,
+                y,
+                {
+                    align: "center"
+                }
+            );
+
+
+            y += 8;
+
+
+            doc.setFontSize(10);
+
+            doc.setFont("helvetica", "normal");
+
+
+            doc.text(
+                `Subject: ${paper.subject || ""}`,
+                15,
+                y
+            );
+
+
+            doc.text(
+                `Semester: ${paper.semester || ""}`,
+                150,
+                y
+            );
+
+
+            y += 6;
+
+
+            doc.text(
+                `Subject Code: ${paper.subjectCode || ""}`,
+                15,
+                y
+            );
+
+
+            doc.text(
+                `Maximum Marks: ${paper.maximumMarks || 100}`,
+                150,
+                y
+            );
+
+
+            y += 6;
+
+
+            doc.text(
+                `Duration: ${paper.duration || "3 Hours"}`,
+                15,
+                y
+            );
+
+
+            doc.text(
+                `Session: ${paper.academicSession || ""}`,
+                150,
+                y
+            );
+
+
+            y += 12;
+
+
+            doc.setLineWidth(0.5);
+
+            doc.line(
+                15,
+                y,
+                195,
+                y
+            );
+
+
+            y += 10;
+
+
+            const questions =
+                paper.questions || [];
+
+
+            questions.forEach((question, index) => {
+
+                const text =
+                    `${index + 1}. ${
+                        question.question ||
+                        question.text ||
+                        ""
+                    }`;
+
+
+                const lines =
+                    doc.splitTextToSize(
+                        text,
+                        175
+                    );
+
+
+                if (y + lines.length * 6 > 280) {
+
+                    doc.addPage();
+
+                    y = 20;
+                }
+
+
+                doc.text(
+                    lines,
+                    15,
+                    y
+                );
+
+
+                y +=
+                    lines.length * 6;
+
+
+                doc.setFontSize(8);
+
+                doc.setTextColor(100);
+
+
+                doc.text(
+                    `${question.type || ""} | ${
+                        question.difficulty || ""
+                    } | ${
+                        question.marks || 0
+                    } Marks`,
+                    20,
+                    y
+                );
+
+
+                doc.setTextColor(0);
+
+                doc.setFontSize(10);
+
+
+                y += 10;
+
+            });
+
+
+            const safeName =
+                (paper.paperName || "question-paper")
+                    .replace(/[^a-z0-9]/gi, "_");
+
+
+            doc.save(
+                safeName + ".pdf"
+            );
+
+        });
+
+
+    /* ================= PRINT ================= */
+
+    document
+        .getElementById("printBtn")
+        .addEventListener("click", function () {
+
+            if (!generatedPaper) {
+
+                showStatus(
+                    "Please generate a paper first.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const printWindow =
+                window.open(
+                    "",
+                    "_blank"
+                );
+
+
+            printWindow.document.write(`
+
+                <html>
+
+                <head>
+
+                    <title>Question Paper</title>
+
+                    <style>
+
+                        body {
+                            font-family: Arial, sans-serif;
+                            padding: 35px;
+                            color: #111;
+                        }
+
+                        h2, h3, p {
+                            text-align: center;
+                        }
+
+                        .meta {
+                            margin: 20px 0;
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 8px;
+                        }
+
+                        .question {
+                            margin: 18px 0;
+                            line-height: 1.6;
+                        }
+
+                        .info {
+                            font-size: 11px;
+                            color: #666;
+                        }
+
+                    </style>
+
+                </head>
+
+                <body>
+
+                    <h2>Galgotias University</h2>
+
+                    <h3>
+                        ${escapeHtml(
+                            generatedPaper.paperName ||
+                            "Question Paper"
+                        )}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(
+                            generatedPaper.subject || ""
+                        )}
+                    </p>
+
+                    <div class="meta">
+
+                        <div>
+                            Semester:
+                            ${escapeHtml(
+                                String(
+                                    generatedPaper.semester || ""
+                                )
+                            )}
+                        </div>
+
+                        <div>
+                            Subject Code:
+                            ${escapeHtml(
+                                generatedPaper.subjectCode || ""
+                            )}
+                        </div>
+
+                        <div>
+                            Duration:
+                            ${escapeHtml(
+                                generatedPaper.duration ||
+                                "3 Hours"
+                            )}
+                        </div>
+
+                        <div>
+                            Maximum Marks:
+                            ${escapeHtml(
+                                String(
+                                    generatedPaper.maximumMarks ||
+                                    100
+                                )
+                            )}
+                        </div>
+
+                    </div>
+
+                    ${
+                        (generatedPaper.questions || [])
+                            .map((q, i) => `
+
+                                <div class="question">
+
+                                    <b>${i + 1}.</b>
+                                    ${escapeHtml(
+                                        q.question ||
+                                        q.text ||
+                                        ""
+                                    )}
+
+                                    <div class="info">
+
+                                        ${
+                                            escapeHtml(
+                                                q.type ||
+                                                ""
+                                            )
+                                        }
+                                        |
+                                        ${
+                                            escapeHtml(
+                                                q.difficulty ||
+                                                ""
+                                            )
+                                        }
+                                        |
+                                        ${
+                                            q.marks || 0
+                                        } Marks
+
+                                    </div>
+
+                                </div>
+
+                            `)
+                            .join("")
+                    }
+
+                </body>
+
+                </html>
+
+            `);
+
+
+            printWindow.document.close();
+
+            printWindow.focus();
+
+            setTimeout(() => {
+
+                printWindow.print();
+
+            }, 300);
+
+        });
+
+
+    /* ================= RESET ================= */
+
+    document
+        .getElementById("resetBtn")
+        .addEventListener("click", function () {
+
+            document
+                .getElementById("semester")
+                .value = "";
+
+            document
+                .getElementById("subject")
+                .value = "";
+
+            document
+                .getElementById("subjectCode")
+                .value = "";
+
+            document
+                .getElementById("academicSession")
+                .value = "";
+
+            document
+                .getElementById("paperName")
+                .value = "";
+
+            document
+                .getElementById("duration")
+                .value = "3 Hours";
+
+            document
+                .getElementById("maximumMarks")
+                .value = "100";
+
+
+            document
+                .getElementById("easyPercentage")
+                .value = "30";
+
+            document
+                .getElementById("mediumPercentage")
+                .value = "40";
+
+            document
+                .getElementById("hardPercentage")
+                .value = "30";
+
+
+            document
+                .getElementById("shortAnswerCount")
+                .value = "5";
+
+            document
+                .getElementById("longAnswerCount")
+                .value = "5";
+
+            document
+                .getElementById("numericalCount")
+                .value = "0";
+
+            document
+                .getElementById("programmingCount")
+                .value = "0";
+
+            document
+                .getElementById("caseStudyCount")
+                .value = "0";
+
+
+            generatedPaper = null;
+
+
+            document
+                .getElementById("previewCard")
+                .classList.remove("active");
+
+
+            document
+                .getElementById("emptyCard")
+                .style.display = "block";
+
+
+            document
+                .getElementById("statusMessage")
+                .className = "status";
+
+
+            updatePercentage();
+
+        });
+
+
+    /* ================= ESCAPE HTML ================= */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    updatePercentage();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef2f7, #dfe7f1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lock-screen {
+    width: 90%;
+    max-width: 430px;
+    background: white;
+    padding: 40px 35px;
+    text-align: center;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+}
+
+.lock-icon {
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+.lock-screen h1 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.lock-screen h2 {
+    font-size: 20px;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.lock-message {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+#password {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+#password:focus {
+    border-color: #333;
+}
+
+#unlockBtn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#unlockBtn:hover {
+    background: #000;
+}
+
+.forgot-btn {
+    margin-top: 18px;
+    border: none;
+    background: transparent;
+    color: #555;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.forgot-btn:hover {
+    text-decoration: underline;
+}

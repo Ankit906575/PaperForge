@@ -1,0 +1,3413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Previous Paper View - Question Paper Generator
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+            color: #1f2937;
+        }
+
+        .dashboard {
+            min-height: 100vh;
+        }
+
+        /* =========================================
+           TOP APPLICATION HEADER
+        ========================================= */
+
+        .dashboard-header {
+            width: 100%;
+            min-height: 78px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #7c3aed,
+                    #2563eb
+                );
+
+            color: white;
+
+            padding:
+                15px
+                30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow:
+                0 5px 20px
+                rgba(15, 23, 42, 0.18);
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .dashboard-header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .dashboard-header button {
+            border: none;
+            background: rgba(255,255,255,0.18);
+            color: white;
+
+            padding:
+                10px
+                18px;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .dashboard-header button:hover {
+            background: rgba(255,255,255,0.28);
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        main {
+            width: 100%;
+            max-width: 1450px;
+
+            margin: auto;
+
+            padding:
+                25px
+                30px
+                40px;
+        }
+
+        main > h2 {
+            margin:
+                0
+                0
+                5px;
+
+            font-size: 27px;
+            color: #111827;
+        }
+
+        .message {
+            margin-top: 12px;
+            font-weight: 700;
+        }
+
+        .success-message {
+            color: #15803d;
+        }
+
+        .error-message {
+            color: #dc2626;
+        }
+
+
+        /* =========================================
+           PAPER PREVIEW
+        ========================================= */
+
+        .paper-preview {
+            background: white;
+
+            width: 100%;
+
+            max-width: 900px;
+
+            margin:
+                25px
+                auto
+                0;
+
+            padding:
+                45px
+                50px;
+
+            border:
+                1px solid #d1d5db;
+
+            box-shadow:
+                0 15px 45px
+                rgba(15,23,42,0.10);
+
+            border-radius: 4px;
+        }
+
+
+        /* =========================================
+           EXAM PAPER HEADER
+        ========================================= */
+
+        .exam-header {
+            position: relative;
+
+            text-align: center;
+
+            padding-bottom: 14px;
+
+            border-bottom:
+                2px solid #111827;
+
+            margin-bottom: 18px;
+        }
+
+        .exam-university {
+            font-size: 21px;
+            font-weight: 800;
+
+            letter-spacing:
+                0.7px;
+
+            text-transform: uppercase;
+        }
+
+        .exam-title {
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-top: 5px;
+
+            letter-spacing:
+                1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .exam-subject {
+            font-size: 17px;
+
+            font-weight: 800;
+
+            margin-top: 9px;
+        }
+
+        .exam-paper-name {
+            font-size: 12px;
+
+            margin-top: 4px;
+
+            color: #4b5563;
+        }
+
+        .exam-paper-number {
+            position: absolute;
+
+            top: 0;
+            right: 0;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #374151;
+        }
+
+
+        /* =========================================
+           INFORMATION TABLE
+        ========================================= */
+
+        .paper-info-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+            margin-bottom: 20px;
+
+            font-size: 12px;
+        }
+
+        .paper-info-table td {
+            border:
+                1px solid #9ca3af;
+
+            padding:
+                8px
+                10px;
+
+            vertical-align: middle;
+        }
+
+        .paper-info-table .label {
+            font-weight: 700;
+
+            width: 17%;
+
+            background: #f8fafc;
+
+            color: #111827;
+        }
+
+        .paper-info-table .value {
+            width: 23%;
+        }
+
+
+        /* =========================================
+           INSTRUCTIONS
+        ========================================= */
+
+        .instructions-box {
+            border:
+                1px solid #9ca3af;
+
+            padding:
+                11px
+                14px;
+
+            margin-bottom: 22px;
+
+            font-size: 11.5px;
+        }
+
+        .instructions-title {
+            font-weight: 800;
+
+            margin-bottom: 7px;
+
+            text-transform: uppercase;
+        }
+
+        .instructions-box ol {
+            margin:
+                0
+                0
+                0
+                18px;
+
+            padding: 0;
+        }
+
+        .instructions-box li {
+            margin-bottom: 4px;
+        }
+
+
+        /* =========================================
+           QUESTIONS
+        ========================================= */
+
+        .questions-heading {
+            font-size: 13px;
+
+            font-weight: 800;
+
+            margin:
+                0
+                0
+                13px;
+
+            border-bottom:
+                1px solid #d1d5db;
+
+            padding-bottom: 6px;
+
+            text-transform: uppercase;
+        }
+
+        .question-item {
+            position: relative;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 7px;
+
+            margin-bottom: 15px;
+
+            padding-bottom: 8px;
+
+            line-height: 1.55;
+
+            page-break-inside: avoid;
+
+            break-inside: avoid;
+        }
+
+        .question-number {
+            min-width: 25px;
+
+            font-weight: 700;
+
+            font-size: 12px;
+        }
+
+        .question-text {
+            flex: 1;
+
+            padding-right: 10px;
+
+            font-size: 12px;
+
+            color: #111827;
+        }
+
+        .question-marks {
+            min-width: 58px;
+
+            text-align: right;
+
+            font-weight: 700;
+
+            font-size: 11px;
+
+            white-space: nowrap;
+        }
+
+        /* IMPORTANT:
+           NO QUESTION TYPE / DIFFICULTY
+        */
+
+        .question-meta {
+            display: none !important;
+        }
+
+        .question-actions {
+            margin-top: 8px;
+        }
+
+        .replace-button {
+            border: none;
+
+            background:
+                #4f46e5;
+
+            color: white;
+
+            padding:
+                6px
+                10px;
+
+            border-radius: 6px;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+        .replace-button:hover {
+            background:
+                #3730a3;
+        }
+
+
+        /* =========================================
+           ACTION BUTTONS
+        ========================================= */
+
+        .top-buttons {
+            max-width: 900px;
+
+            margin:
+                20px
+                auto
+                0;
+        }
+
+        .menu-grid {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            justify-content: center;
+
+            gap: 10px;
+        }
+
+        .menu-grid button {
+            border: none;
+
+            padding:
+                11px
+                17px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #7c3aed
+                );
+
+            color: white;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 5px 14px
+                rgba(79,70,229,0.20);
+
+            transition: 0.2s;
+        }
+
+        .menu-grid button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 18px
+                rgba(79,70,229,0.28);
+        }
+
+        .menu-grid .download-button {
+            background:
+                linear-gradient(
+                    135deg,
+                    #059669,
+                    #047857
+                );
+        }
+
+
+        /* =========================================
+           EDIT PANEL
+        ========================================= */
+
+        .edit-panel {
+            background: white;
+
+            max-width: 900px;
+
+            margin:
+                20px
+                auto;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(15,23,42,0.08);
+        }
+
+        .edit-panel h3 {
+            margin-top: 0;
+
+            color: #111827;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            padding:
+                10px
+                12px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color:
+                #6366f1;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(99,102,241,0.12);
+        }
+
+        .edit-buttons {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .edit-buttons button {
+            border: none;
+
+            padding:
+                10px
+                16px;
+
+            border-radius: 7px;
+
+            background:
+                #4f46e5;
+
+            color: white;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================================
+           REPLACEMENT PANEL
+        ========================================= */
+
+        .replace-panel {
+            max-width: 900px;
+
+            margin:
+                20px
+                auto;
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(15,23,42,0.08);
+        }
+
+        .replacement-question {
+            background:
+                #f8fafc;
+
+            border:
+                1px solid #dbe3ef;
+
+            padding:
+                14px;
+
+            border-radius: 8px;
+
+            margin-bottom: 10px;
+        }
+
+        .replacement-question button {
+            margin-top: 9px;
+
+            border: none;
+
+            background:
+                #4f46e5;
+
+            color: white;
+
+            padding:
+                8px
+                12px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+        .replacement-question .question-meta {
+            display: block !important;
+
+            font-size: 11px;
+
+            color: #64748b;
+
+            margin-top: 5px;
+        }
+
+
+        /* =========================================
+           PRINT
+        ========================================= */
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+
+            html,
+            body {
+                width: 210mm;
+                min-height: 297mm;
+
+                margin: 0;
+
+                background: white !important;
+            }
+
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .dashboard-header,
+            main > h2,
+            #loadingMessage,
+            #errorMessage,
+            #editPanel,
+            #replacePanel,
+            .top-buttons,
+            .question-actions {
+                display: none !important;
+            }
+
+            .dashboard {
+                width: 210mm;
+
+                min-height: 297mm;
+
+                margin: 0;
+
+                padding: 0;
+            }
+
+            main {
+                width: 210mm;
+
+                max-width: none;
+
+                margin: 0;
+
+                padding: 0;
+            }
+
+            .paper-preview {
+                width: 210mm;
+
+                max-width: none;
+
+                min-height: 297mm;
+
+                margin: 0;
+
+                padding:
+                    15mm
+                    15mm
+                    15mm;
+
+                border: none;
+
+                box-shadow: none;
+
+                border-radius: 0;
+            }
+
+            .exam-header {
+                margin-bottom: 15px;
+            }
+
+            .question-item {
+                border: none !important;
+
+                padding:
+                    0
+                    0
+                    7px;
+
+                margin-bottom: 12px;
+            }
+
+            .question-meta {
+                display: none !important;
+            }
+
+            .replace-button {
+                display: none !important;
+            }
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media screen and (max-width: 800px) {
+
+            .dashboard-header {
+                padding:
+                    15px
+                    18px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 18px;
+            }
+
+            main {
+                padding:
+                    18px
+                    12px
+                    30px;
+            }
+
+            .paper-preview {
+                padding:
+                    25px
+                    20px;
+            }
+
+            .paper-info-table {
+                font-size: 10px;
+            }
+
+            .paper-info-table td {
+                padding:
+                    6px;
+                }
+            }
+
+            .question-text {
+                font-size: 11px;
+            }
+
+            .question-marks {
+                font-size: 10px;
+            }
+
+        
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard">
+
+    <!-- APPLICATION HEADER -->
+
+    <header class="dashboard-header">
+
+        <div>
+
+            <h1>
+                Galgotias University
+            </h1>
+
+            <p>
+                Question Paper Generator System
+            </p>
+
+        </div>
+
+        <button
+            onclick="window.location.href='dashboard.html'"
+        >
+            ← Dashboard
+        </button>
+
+    </header>
+
+
+    <main>
+
+        <h2>
+            Previous Paper
+        </h2>
+
+
+        <p
+            id="loadingMessage"
+            class="message"
+        >
+            Loading paper...
+        </p>
+
+
+        <p
+            id="errorMessage"
+            class="message error-message"
+            style="display:none;"
+        ></p>
+
+
+        <!-- EDIT PANEL -->
+
+        <section
+            id="editPanel"
+            class="edit-panel"
+            style="display:none;"
+        >
+
+            <h3>
+                Edit Paper Details
+            </h3>
+
+
+            <div class="form-group">
+
+                <label>
+                    Paper Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editPaperName"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="editSubject"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Subject Code
+                </label>
+
+                <input
+                    type="text"
+                    id="editSubjectCode"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Semester
+                </label>
+
+                <input
+                    type="text"
+                    id="editSemester"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Academic Session
+                </label>
+
+                <input
+                    type="text"
+                    id="editAcademicSession"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Duration
+                </label>
+
+                <input
+                    type="text"
+                    id="editDuration"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Maximum Marks
+                </label>
+
+                <input
+                    type="number"
+                    id="editMaximumMarks"
+                >
+
+            </div>
+
+
+            <div class="edit-buttons">
+
+                <button
+                    onclick="savePaperChanges()"
+                >
+                    Save Changes
+                </button>
+
+                <button
+                    onclick="cancelEdit()"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+
+            <p
+                id="editMessage"
+                class="message"
+            ></p>
+
+        </section>
+
+
+        <!-- PAPER -->
+
+        <section
+            id="paperSection"
+            style="display:none;"
+        >
+
+            <div
+                id="paperPreview"
+                class="paper-preview"
+            ></div>
+
+        </section>
+
+
+        <!-- REPLACEMENT PANEL -->
+
+        <section
+            id="replacePanel"
+            class="replace-panel"
+            style="display:none;"
+        >
+
+            <h3>
+                Replace Question
+            </h3>
+
+            <p>
+                Select a replacement question from the Question Bank.
+            </p>
+
+            <p
+                id="replaceMessage"
+                class="message"
+            ></p>
+
+            <div
+                id="replacementList"
+            ></div>
+
+        </section>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <section
+            id="actionSection"
+            class="top-buttons"
+            style="display:none;"
+        >
+
+            <div class="menu-grid">
+
+                <button
+                    onclick="toggleEditPanel()"
+                >
+                    Edit Paper
+                </button>
+
+
+                <button
+                    class="download-button"
+                    onclick="downloadPDF()"
+                >
+                    Download PDF
+                </button>
+
+
+                <button
+                    onclick="window.print()"
+                >
+                    Print Paper
+                </button>
+
+
+                <button
+                    onclick="window.location.href='previous-papers.html'"
+                >
+                    ← Previous Papers
+                </button>
+
+
+                <button
+                    onclick="window.location.href='dashboard.html'"
+                >
+                    Dashboard
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       GET PAPER ID
+    ========================================= */
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const paperId =
+        urlParams.get("id");
+
+    let currentPaper = null;
+
+    let replacementQuestionIndex = null;
+
+
+    /* =========================================
+       PAPER LABEL
+    ========================================= */
+
+    function getPaperLabel(paper) {
+
+        let label = "";
+
+        if (paper.paperLabel) {
+
+            label =
+                String(
+                    paper.paperLabel
+                );
+
+        } else if (
+            paper.paperNumber !==
+            undefined &&
+            paper.paperNumber !== null
+        ) {
+
+            label =
+                "Paper " +
+                String(
+                    paper.paperNumber
+                ).padStart(
+                    3,
+                    "0"
+                );
+
+        } else {
+
+            label =
+                "Previous Paper";
+
+        }
+
+
+        /* Fix:
+           Paper Paper 005
+        */
+
+        label =
+            label.replace(
+                /^Paper\s+Paper\s+/i,
+                "Paper "
+            );
+
+
+        return label;
+
+    }
+
+
+    /* =========================================
+       SAFE FIELD
+    ========================================= */
+
+    function getPaperValue(
+        paper,
+        keys,
+        fallback
+    ) {
+
+        for (
+            const key of keys
+        ) {
+
+            if (
+                paper[key] !==
+                undefined &&
+                paper[key] !==
+                null &&
+                String(
+                    paper[key]
+                ).trim() !== ""
+            ) {
+
+                return paper[key];
+
+            }
+
+        }
+
+        return fallback;
+
+    }
+
+
+    /* =========================================
+       LOAD PAPER
+    ========================================= */
+
+    async function loadPaper() {
+
+        const loadingMessage =
+            document.getElementById(
+                "loadingMessage"
+            );
+
+        const errorMessage =
+            document.getElementById(
+                "errorMessage"
+            );
+
+        const paperSection =
+            document.getElementById(
+                "paperSection"
+            );
+
+        const actionSection =
+            document.getElementById(
+                "actionSection"
+            );
+
+
+        if (!paperId) {
+
+            loadingMessage.style.display =
+                "none";
+
+            errorMessage.textContent =
+                "Paper ID is missing.";
+
+            errorMessage.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/papers/" +
+                    encodeURIComponent(
+                        paperId
+                    )
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load paper."
+                );
+
+            }
+
+
+            currentPaper =
+                result.paper;
+
+
+            loadingMessage.style.display =
+                "none";
+
+            paperSection.style.display =
+                "block";
+
+            actionSection.style.display =
+                "block";
+
+
+            displayPaper(
+                currentPaper
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            loadingMessage.style.display =
+                "none";
+
+            errorMessage.textContent =
+                error.message ||
+                "Unable to load paper.";
+
+            errorMessage.style.display =
+                "block";
+
+        }
+
+    }
+
+
+    /* =========================================
+       DISPLAY PAPER
+    ========================================= */
+
+    function displayPaper(paper) {
+
+        const preview =
+            document.getElementById(
+                "paperPreview"
+            );
+
+
+        const paperLabel =
+            getPaperLabel(
+                paper
+            );
+
+
+        const subjectCode =
+            getPaperValue(
+                paper,
+                [
+                    "subjectCode"
+                ],
+                "-"
+            );
+
+
+        const academicSession =
+            getPaperValue(
+                paper,
+                [
+                    "academicSession",
+                    "session"
+                ],
+                "-"
+            );
+
+
+        const duration =
+            getPaperValue(
+                paper,
+                [
+                    "duration",
+                    "examDuration"
+                ],
+                "3 Hours"
+            );
+
+
+        const maximumMarks =
+            getPaperValue(
+                paper,
+                [
+                    "maximumMarks",
+                    "maxMarks",
+                    "totalMarks"
+                ],
+                "100"
+            );
+
+
+        const paperName =
+            getPaperValue(
+                paper,
+                [
+                    "paperName"
+                ],
+                "QUESTION PAPER"
+            );
+
+
+        const subject =
+            getPaperValue(
+                paper,
+                [
+                    "subject"
+                ],
+                "-"
+            );
+
+
+        let html = "";
+
+
+        /* =====================================
+           HEADER
+        ===================================== */
+
+        html += `
+
+            <div class="exam-header">
+
+                <div class="exam-paper-number">
+
+                    ${escapeHtml(
+                        paperLabel
+                    )}
+
+                </div>
+
+
+                <div class="exam-university">
+
+                    GALGOTIAS UNIVERSITY
+
+                </div>
+
+
+                <div class="exam-title">
+
+                    END SEMESTER EXAMINATION
+
+                </div>
+
+
+                <div class="exam-subject">
+
+                    ${escapeHtml(
+                        subject
+                    )}
+
+                </div>
+
+
+                <div class="exam-paper-name">
+
+                    ${escapeHtml(
+                        paperName
+                    )}
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        /* =====================================
+           INFORMATION TABLE
+        ===================================== */
+
+        html += `
+
+            <table
+                class="paper-info-table"
+            >
+
+                <tr>
+
+                    <td class="label">
+                        Semester
+                    </td>
+
+                    <td class="value">
+                        ${escapeHtml(
+                            paper.semester ||
+                            "-"
+                        )}
+                    </td>
+
+
+                    <td class="label">
+                        Subject Code
+                    </td>
+
+                    <td class="value">
+                        ${escapeHtml(
+                            subjectCode
+                        )}
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="label">
+                        Academic Session
+                    </td>
+
+                    <td class="value">
+                        ${escapeHtml(
+                            academicSession
+                        )}
+                    </td>
+
+
+                    <td class="label">
+                        Time
+                    </td>
+
+                    <td class="value">
+                        ${escapeHtml(
+                            duration
+                        )}
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td class="label">
+                        Maximum Marks
+                    </td>
+
+                    <td class="value">
+                        ${escapeHtml(
+                            maximumMarks
+                        )}
+                    </td>
+
+
+                    <td class="label">
+                        Paper
+                    </td>
+
+                    <td class="value">
+                        ${escapeHtml(
+                            paperLabel
+                        )}
+                    </td>
+
+                </tr>
+
+            </table>
+
+        `;
+
+
+        /* =====================================
+           INSTRUCTIONS
+        ===================================== */
+
+        html += `
+
+            <div
+                class="instructions-box"
+            >
+
+                <div class="instructions-title">
+
+                    General Instructions
+
+                </div>
+
+
+                <ol>
+
+                    <li>
+                        Attempt all questions.
+                    </li>
+
+                    <li>
+                        Read each question carefully before answering.
+                    </li>
+
+                    <li>
+                        Write answers according to the marks allotted.
+                    </li>
+
+                    <li>
+                        The question paper is to be answered in English.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        `;
+
+
+        /* =====================================
+           QUESTIONS
+        ===================================== */
+
+        html += `
+
+            <div class="questions-heading">
+
+                Questions
+
+            </div>
+
+        `;
+
+
+        if (
+            !Array.isArray(
+                paper.questions
+            ) ||
+            paper.questions.length === 0
+        ) {
+
+            html += `
+
+                <p>
+                    No questions found in this paper.
+                </p>
+
+            `;
+
+        } else {
+
+            paper.questions.forEach(
+                function(
+                    question,
+                    index
+                ) {
+
+                    html += `
+
+                        <div
+                            class="question-item"
+                            id="question-${index}"
+                        >
+
+                            <div
+                                class="question-number"
+                            >
+
+                                ${index + 1}.
+
+                            </div>
+
+
+                            <div
+                                class="question-text"
+                            >
+
+                                ${escapeHtml(
+                                    question.question ||
+                                    ""
+                                )}
+
+                            </div>
+
+
+                            <div
+                                class="question-marks"
+                            >
+
+                                [
+                                ${escapeHtml(
+                                    question.marks ||
+                                    0
+                                )}
+                                Marks
+                                ]
+
+                            </div>
+
+
+                            <!--
+                                QUESTION TYPE
+                                AND DIFFICULTY
+                                INTENTIONALLY HIDDEN
+                            -->
+
+                            <div
+                                class="question-meta"
+                            >
+
+                                ${escapeHtml(
+                                    question.questionType ||
+                                    ""
+                                )}
+
+                                |
+
+                                ${escapeHtml(
+                                    question.difficulty ||
+                                    ""
+                                )}
+
+                            </div>
+
+
+                            <div
+                                class="question-actions"
+                            >
+
+                                <button
+                                    class="replace-button"
+                                    onclick="
+                                        openReplaceQuestion(
+                                            ${index}
+                                        )
+                                    "
+                                >
+
+                                    Replace Question
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+
+
+        preview.innerHTML =
+            html;
+
+    }
+
+
+    /* =========================================
+       EDIT PANEL
+    ========================================= */
+
+    function toggleEditPanel() {
+
+        const panel =
+            document.getElementById(
+                "editPanel"
+            );
+
+
+        if (
+            panel.style.display ===
+            "none"
+        ) {
+
+            document.getElementById(
+                "editPaperName"
+            ).value =
+                currentPaper.paperName ||
+                "";
+
+            document.getElementById(
+                "editSubject"
+            ).value =
+                currentPaper.subject ||
+                "";
+
+            document.getElementById(
+                "editSubjectCode"
+            ).value =
+                currentPaper.subjectCode ||
+                "";
+
+            document.getElementById(
+                "editSemester"
+            ).value =
+                currentPaper.semester ||
+                "";
+
+            document.getElementById(
+                "editAcademicSession"
+            ).value =
+                currentPaper.academicSession ||
+                "";
+
+            document.getElementById(
+                "editDuration"
+            ).value =
+                currentPaper.duration ||
+                "";
+
+            document.getElementById(
+                "editMaximumMarks"
+            ).value =
+                currentPaper.maximumMarks ||
+                "";
+
+
+            panel.style.display =
+                "block";
+
+
+            panel.scrollIntoView({
+                behavior: "smooth"
+            });
+
+        } else {
+
+            panel.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* =========================================
+       CANCEL EDIT
+    ========================================= */
+
+    function cancelEdit() {
+
+        document.getElementById(
+            "editPanel"
+        ).style.display =
+            "none";
+
+        document.getElementById(
+            "editMessage"
+        ).textContent =
+            "";
+
+    }
+
+
+    /* =========================================
+       SAVE PAPER CHANGES
+    ========================================= */
+
+    async function savePaperChanges() {
+
+        const message =
+            document.getElementById(
+                "editMessage"
+            );
+
+
+        const updatedPaper = {
+
+            paperName:
+                document.getElementById(
+                    "editPaperName"
+                ).value.trim(),
+
+            subject:
+                document.getElementById(
+                    "editSubject"
+                ).value.trim(),
+
+            subjectCode:
+                document.getElementById(
+                    "editSubjectCode"
+                ).value.trim(),
+
+            semester:
+                document.getElementById(
+                    "editSemester"
+                ).value.trim(),
+
+            academicSession:
+                document.getElementById(
+                    "editAcademicSession"
+                ).value.trim(),
+
+            duration:
+                document.getElementById(
+                    "editDuration"
+                ).value.trim(),
+
+            maximumMarks:
+                Number(
+                    document.getElementById(
+                        "editMaximumMarks"
+                    ).value
+                ),
+
+            questions:
+                currentPaper.questions
+
+        };
+
+
+        if (
+            !updatedPaper.paperName ||
+            !updatedPaper.subject ||
+            !updatedPaper.semester
+        ) {
+
+            message.textContent =
+                "Paper Name, Subject and Semester are required.";
+
+            message.className =
+                "message error-message";
+
+            return;
+
+        }
+
+
+        try {
+
+            message.textContent =
+                "Saving changes...";
+
+            message.className =
+                "message";
+
+
+            const response =
+                await fetch(
+                    "/api/papers/" +
+                    encodeURIComponent(
+                        paperId
+                    ),
+                    {
+
+                        method:
+                            "PUT",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                updatedPaper
+                            )
+
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.message ||
+                    "Failed to update paper."
+                );
+
+            }
+
+
+            currentPaper = {
+
+                ...currentPaper,
+
+                ...updatedPaper
+
+            };
+
+
+            displayPaper(
+                currentPaper
+            );
+
+
+            message.textContent =
+                "Paper updated successfully.";
+
+            message.className =
+                "message success-message";
+
+
+            setTimeout(
+                function() {
+
+                    document.getElementById(
+                        "editPanel"
+                    ).style.display =
+                        "none";
+
+                },
+                1200
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            message.textContent =
+                error.message ||
+                "Failed to update paper.";
+
+            message.className =
+                "message error-message";
+
+        }
+
+    }
+
+
+    /* =========================================
+       OPEN REPLACEMENT
+    ========================================= */
+
+    async function openReplaceQuestion(
+        questionIndex
+    ) {
+
+        replacementQuestionIndex =
+            questionIndex;
+
+
+        const panel =
+            document.getElementById(
+                "replacePanel"
+            );
+
+        const list =
+            document.getElementById(
+                "replacementList"
+            );
+
+        const message =
+            document.getElementById(
+                "replaceMessage"
+            );
+
+
+        const selectedQuestion =
+            currentPaper.questions[
+                questionIndex
+            ];
+
+
+        panel.style.display =
+            "block";
+
+        list.innerHTML =
+            "";
+
+        message.textContent =
+            "Loading replacement questions...";
+
+        message.className =
+            "message";
+
+
+        panel.scrollIntoView({
+            behavior: "smooth"
+        });
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/questions"
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load questions."
+                );
+
+            }
+
+
+            let questions =
+                result.questions ||
+                [];
+
+
+            /* Same type + difficulty + marks */
+
+            questions =
+                questions.filter(
+                    function(question) {
+
+                        const sameType =
+                            String(
+                                question.questionType ||
+                                ""
+                            ).toLowerCase() ===
+                            String(
+                                selectedQuestion.questionType ||
+                                ""
+                            ).toLowerCase();
+
+
+                        const sameDifficulty =
+                            String(
+                                question.difficulty ||
+                                ""
+                            ).toLowerCase() ===
+                            String(
+                                selectedQuestion.difficulty ||
+                                ""
+                            ).toLowerCase();
+
+
+                        const sameMarks =
+                            Number(
+                                question.marks
+                            ) ===
+                            Number(
+                                selectedQuestion.marks
+                            );
+
+
+                        const sameQuestion =
+                            String(
+                                question.question ||
+                                ""
+                            ).trim() ===
+                            String(
+                                selectedQuestion.question ||
+                                ""
+                            ).trim();
+
+
+                        return (
+                            sameType &&
+                            sameDifficulty &&
+                            sameMarks &&
+                            !sameQuestion
+                        );
+
+                    }
+                );
+
+
+            /* Remove questions already in paper */
+
+            questions =
+                questions.filter(
+                    function(question) {
+
+                        return !currentPaper.questions.some(
+                            function(
+                                paperQuestion,
+                                index
+                            ) {
+
+                                if (
+                                    index ===
+                                    replacementQuestionIndex
+                                ) {
+
+                                    return false;
+
+                                }
+
+
+                                return (
+                                    String(
+                                        paperQuestion.question ||
+                                        ""
+                                    ).trim() ===
+                                    String(
+                                        question.question ||
+                                        ""
+                                    ).trim()
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            if (
+                questions.length ===
+                0
+            ) {
+
+                message.textContent =
+                    "No suitable replacement question found.";
+
+                message.className =
+                    "message error-message";
+
+                return;
+
+            }
+
+
+            message.textContent =
+                questions.length +
+                " suitable question(s) found.";
+
+            message.className =
+                "message";
+
+
+            questions.forEach(
+                function(question) {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "replacement-question";
+
+
+                    item.innerHTML = `
+
+                        <strong>
+
+                            ${escapeHtml(
+                                question.question
+                            )}
+
+                        </strong>
+
+
+                        <div
+                            class="question-meta"
+                        >
+
+                            Type:
+                            ${escapeHtml(
+                                question.questionType
+                            )}
+
+                            |
+
+                            Difficulty:
+                            ${escapeHtml(
+                                question.difficulty
+                            )}
+
+                            |
+
+                            Marks:
+                            ${escapeHtml(
+                                question.marks
+                            )}
+
+                        </div>
+
+
+                        <button
+                            onclick="
+                                selectReplacementQuestion(
+                                    '${escapeHtmlAttribute(
+                                        question._id
+                                    )}'
+                                )
+                            "
+                        >
+
+                            Use This Question
+
+                        </button>
+
+                    `;
+
+
+                    list.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            message.textContent =
+                error.message ||
+                "Failed to load replacement questions.";
+
+            message.className =
+                "message error-message";
+
+        }
+
+    }
+
+
+    /* =========================================
+       SELECT REPLACEMENT
+    ========================================= */
+
+    async function selectReplacementQuestion(
+        questionId
+    ) {
+
+        if (
+            replacementQuestionIndex ===
+            null
+        ) {
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/questions/" +
+                    encodeURIComponent(
+                        questionId
+                    )
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.message ||
+                    "Unable to load selected question."
+                );
+
+            }
+
+
+            const newQuestion =
+                result.question;
+
+
+            currentPaper.questions[
+                replacementQuestionIndex
+            ] =
+                newQuestion;
+
+
+            displayPaper(
+                currentPaper
+            );
+
+
+            document.getElementById(
+                "replacePanel"
+            ).style.display =
+                "none";
+
+
+            await saveReplacementToDatabase();
+
+
+            replacementQuestionIndex =
+                null;
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            const message =
+                document.getElementById(
+                    "replaceMessage"
+                );
+
+
+            message.textContent =
+                error.message ||
+                "Failed to replace question.";
+
+            message.className =
+                "message error-message";
+
+        }
+
+    }
+
+
+    /* =========================================
+       SAVE REPLACEMENT
+    ========================================= */
+
+    async function saveReplacementToDatabase() {
+
+        const updatedPaper = {
+
+            paperName:
+                currentPaper.paperName,
+
+            subject:
+                currentPaper.subject,
+
+            subjectCode:
+                currentPaper.subjectCode ||
+                "",
+
+            semester:
+                currentPaper.semester,
+
+            academicSession:
+                currentPaper.academicSession ||
+                "",
+
+            duration:
+                currentPaper.duration ||
+                "",
+
+            maximumMarks:
+                currentPaper.maximumMarks ||
+                0,
+
+            questions:
+                currentPaper.questions
+
+        };
+
+
+        const response =
+            await fetch(
+                "/api/papers/" +
+                encodeURIComponent(
+                    paperId
+                ),
+                {
+
+                    method:
+                        "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            updatedPaper
+                        )
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                "Failed to save replacement."
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       DOWNLOAD PDF
+    ========================================= */
+
+    function downloadPDF() {
+
+        if (!currentPaper) {
+
+            alert(
+                "Paper is not loaded yet."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !window.jspdf ||
+            !window.jspdf.jsPDF
+        ) {
+
+            alert(
+                "PDF library could not be loaded. Please check your internet connection."
+            );
+
+            return;
+
+        }
+
+
+        const {
+            jsPDF
+        } =
+            window.jspdf;
+
+
+        const doc =
+            new jsPDF({
+
+                orientation:
+                    "portrait",
+
+                unit:
+                    "mm",
+
+                format:
+                    "a4"
+
+            });
+
+
+        const pageWidth =
+            doc.internal.pageSize.getWidth();
+
+        const pageHeight =
+            doc.internal.pageSize.getHeight();
+
+
+        const left =
+            15;
+
+        const right =
+            15;
+
+        const top =
+            16;
+
+        const bottom =
+            15;
+
+        const contentWidth =
+            pageWidth -
+            left -
+            right;
+
+
+        let y =
+            top + 8;
+
+
+        const paperLabel =
+            getPaperLabel(
+                currentPaper
+            );
+
+
+        const subjectCode =
+            getPaperValue(
+                currentPaper,
+                [
+                    "subjectCode"
+                ],
+                "-"
+            );
+
+
+        const academicSession =
+            getPaperValue(
+                currentPaper,
+                [
+                    "academicSession",
+                    "session"
+                ],
+                "-"
+            );
+
+
+        const duration =
+            getPaperValue(
+                currentPaper,
+                [
+                    "duration",
+                    "examDuration"
+                ],
+                "3 Hours"
+            );
+
+
+        const maximumMarks =
+            getPaperValue(
+                currentPaper,
+                [
+                    "maximumMarks",
+                    "maxMarks",
+                    "totalMarks"
+                ],
+                "100"
+            );
+
+
+        const paperName =
+            getPaperValue(
+                currentPaper,
+                [
+                    "paperName"
+                ],
+                "QUESTION PAPER"
+            );
+
+
+        const subject =
+            getPaperValue(
+                currentPaper,
+                [
+                    "subject"
+                ],
+                "-"
+            );
+
+
+        /* =====================================
+           HEADER
+        ===================================== */
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(
+            16
+        );
+
+        doc.text(
+            "GALGOTIAS UNIVERSITY",
+            pageWidth / 2,
+            y,
+            {
+                align:
+                    "center"
+            }
+        );
+
+
+        y += 6;
+
+
+        doc.setFontSize(
+            9
+        );
+
+        doc.text(
+            "END SEMESTER EXAMINATION",
+            pageWidth / 2,
+            y,
+            {
+                align:
+                    "center"
+            }
+        );
+
+
+        y += 6;
+
+
+        doc.setFontSize(
+            12
+        );
+
+        doc.text(
+            subject,
+            pageWidth / 2,
+            y,
+            {
+                align:
+                    "center"
+            }
+        );
+
+
+        y += 5;
+
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(
+            9
+        );
+
+        doc.text(
+            paperName,
+            pageWidth / 2,
+            y,
+            {
+                align:
+                    "center"
+            }
+        );
+
+
+        /* Paper number */
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(
+            8
+        );
+
+        doc.text(
+            paperLabel,
+            pageWidth -
+                right,
+            top,
+            {
+                align:
+                    "right"
+            }
+        );
+
+
+        y += 7;
+
+
+        /* Header line */
+
+        doc.setLineWidth(
+            0.5
+        );
+
+        doc.line(
+            left,
+            y,
+            pageWidth -
+                right,
+            y
+        );
+
+
+        y += 7;
+
+
+        /* =====================================
+           INFORMATION TABLE
+        ===================================== */
+
+        const tableX =
+            left;
+
+        const tableY =
+            y;
+
+        const tableW =
+            contentWidth;
+
+        const rowH =
+            7;
+
+
+        const col1 =
+            30;
+
+        const col2 =
+            42;
+
+        const col3 =
+            30;
+
+        const col4 =
+            tableW -
+            col1 -
+            col2 -
+            col3;
+
+
+        doc.setFontSize(
+            8
+        );
+
+
+        const rows = [
+
+            [
+                "Semester",
+                String(
+                    currentPaper.semester ||
+                    "-"
+                ),
+                "Subject Code",
+                String(
+                    subjectCode
+                )
+            ],
+
+            [
+                "Academic Session",
+                String(
+                    academicSession
+                ),
+                "Time",
+                String(
+                    duration
+                )
+            ],
+
+            [
+                "Maximum Marks",
+                String(
+                    maximumMarks
+                ),
+                "Paper",
+                String(
+                    paperLabel
+                )
+            ]
+
+        ];
+
+
+        rows.forEach(
+            function(
+                row,
+                rowIndex
+            ) {
+
+                const rowY =
+                    tableY +
+                    rowIndex *
+                    rowH;
+
+
+                let x =
+                    tableX;
+
+
+                const widths = [
+                    col1,
+                    col2,
+                    col3,
+                    col4
+                ];
+
+
+                row.forEach(
+                    function(
+                        value,
+                        cellIndex
+                    ) {
+
+                        const width =
+                            widths[
+                                cellIndex
+                            ];
+
+
+                        doc.rect(
+                            x,
+                            rowY,
+                            width,
+                            rowH
+                        );
+
+
+                        if (
+                            cellIndex ===
+                            0 ||
+                            cellIndex ===
+                            2
+                        ) {
+
+                            doc.setFont(
+                                "helvetica",
+                                "bold"
+                            );
+
+                        } else {
+
+                            doc.setFont(
+                                "helvetica",
+                                "normal"
+                            );
+
+                        }
+
+
+                        doc.text(
+                            value,
+                            x + 3,
+                            rowY + 4.6
+                        );
+
+
+                        x +=
+                            width;
+
+                    }
+                );
+
+            }
+        );
+
+
+        y =
+            tableY +
+            rowH *
+            rows.length +
+            8;
+
+
+        /* =====================================
+           INSTRUCTIONS
+        ===================================== */
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(
+            9
+        );
+
+        doc.text(
+            "GENERAL INSTRUCTIONS",
+            left,
+            y
+        );
+
+
+        y += 5;
+
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(
+            8
+        );
+
+
+        const instructions = [
+
+            "1. Attempt all questions.",
+
+            "2. Read each question carefully before answering.",
+
+            "3. Write answers according to the marks allotted.",
+
+            "4. The question paper is to be answered in English."
+
+        ];
+
+
+        instructions.forEach(
+            function(
+                instruction
+            ) {
+
+                if (
+                    y >
+                    pageHeight -
+                    bottom -
+                    15
+                ) {
+
+                    doc.addPage();
+
+                    y =
+                        top + 8;
+
+                }
+
+
+                doc.text(
+                    instruction,
+                    left,
+                    y
+                );
+
+
+                y += 4.5;
+
+            }
+        );
+
+
+        y += 5;
+
+
+        /* =====================================
+           QUESTIONS HEADING
+        ===================================== */
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(
+            9
+        );
+
+        doc.text(
+            "QUESTIONS",
+            left,
+            y
+        );
+
+
+        y += 6;
+
+
+        /* =====================================
+           QUESTIONS
+        ===================================== */
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+        doc.setFontSize(
+            9
+        );
+
+
+        if (
+            Array.isArray(
+                currentPaper.questions
+            ) &&
+            currentPaper.questions.length >
+            0
+        ) {
+
+            currentPaper.questions.forEach(
+                function(
+                    question,
+                    index
+                ) {
+
+                    const numberText =
+                        String(
+                            index + 1
+                        ) +
+                        ".";
+
+
+                    const questionText =
+                        String(
+                            question.question ||
+                            ""
+                        );
+
+
+                    const marksText =
+                        "[" +
+                        String(
+                            question.marks ||
+                            0
+                        ) +
+                        " Marks]";
+
+
+                    const numberWidth =
+                        8;
+
+                    const marksWidth =
+                        25;
+
+
+                    const textWidth =
+                        contentWidth -
+                        numberWidth -
+                        marksWidth;
+
+
+                    const lines =
+                        doc.splitTextToSize(
+                            questionText,
+                            textWidth
+                        );
+
+
+                    const neededHeight =
+                        lines.length *
+                        4.7 +
+                        7;
+
+
+                    if (
+                        y +
+                        neededHeight >
+                        pageHeight -
+                        bottom
+                    ) {
+
+                        doc.addPage();
+
+                        y =
+                            top + 8;
+
+                    }
+
+
+                    /* Number */
+
+                    doc.setFont(
+                        "helvetica",
+                        "bold"
+                    );
+
+                    doc.text(
+                        numberText,
+                        left,
+                        y
+                    );
+
+
+                    /* Question */
+
+                    doc.setFont(
+                        "helvetica",
+                        "normal"
+                    );
+
+                    lines.forEach(
+                        function(
+                            line,
+                            lineIndex
+                        ) {
+
+                            doc.text(
+                                line,
+                                left +
+                                numberWidth,
+                                y +
+                                lineIndex *
+                                4.7
+                            );
+
+                        }
+                    );
+
+
+                    /* Marks */
+
+                    doc.setFont(
+                        "helvetica",
+                        "bold"
+                    );
+
+                    doc.setFontSize(
+                        8
+                    );
+
+                    doc.text(
+                        marksText,
+                        pageWidth -
+                        right,
+                        y,
+                        {
+                            align:
+                                "right"
+                        }
+                    );
+
+
+                    y +=
+                        lines.length *
+                        4.7 +
+                        7;
+
+
+                    doc.setFontSize(
+                        9
+                    );
+
+                }
+            );
+
+        } else {
+
+            doc.text(
+                "No questions found in this paper.",
+                left,
+                y
+            );
+
+        }
+
+
+        /* =====================================
+           ONLY PAGE NUMBER
+           TOP RIGHT
+        ===================================== */
+
+        addOnlyPageNumbers(
+            doc
+        );
+
+
+        /* =====================================
+           FILE NAME
+        ===================================== */
+
+        const safeName =
+            String(
+                currentPaper.paperName ||
+                "Question-Paper"
+            )
+                .replace(
+                    /[^a-z0-9]+/gi,
+                    "_"
+                )
+                .replace(
+                    /^_+|_+$/g,
+                    ""
+                );
+
+
+        doc.save(
+            safeName +
+            ".pdf"
+        );
+
+    }
+
+
+    /* =========================================
+       PDF PAGE NUMBER
+       ONLY "1", "2", "3"
+       TOP RIGHT
+    ========================================= */
+
+    function addOnlyPageNumbers(
+        doc
+    ) {
+
+        const totalPages =
+            doc.internal.getNumberOfPages();
+
+
+        const pageWidth =
+            doc.internal.pageSize.getWidth();
+
+
+        for (
+            let page = 1;
+            page <= totalPages;
+            page++
+        ) {
+
+            doc.setPage(
+                page
+            );
+
+
+            doc.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            doc.setFontSize(
+                8
+            );
+
+
+            doc.setTextColor(
+                70,
+                70,
+                70
+            );
+
+
+            doc.text(
+                String(page),
+                pageWidth -
+                10,
+                8,
+                {
+                    align:
+                        "right"
+                }
+            );
+
+        }
+
+
+        doc.setTextColor(
+            0,
+            0,
+            0
+        );
+
+    }
+
+
+    /* =========================================
+       ESCAPE HTML
+    ========================================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return "";
+
+        }
+
+
+        return String(
+            value
+        )
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* =========================================
+       ESCAPE ATTRIBUTE
+    ========================================= */
+
+    function escapeHtmlAttribute(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+
+            .replace(
+                /\\/g,
+                "\\\\"
+            )
+
+            .replace(
+                /'/g,
+                "\\'"
+            );
+
+    }
+
+
+    /* =========================================
+       START
+    ========================================= */
+
+    loadPaper();
+
+</script>
+
+</body>
+
+</html>
