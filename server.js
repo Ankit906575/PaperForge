@@ -10,9 +10,7 @@ const app = express();
 
 const PORT = 3000;
 
-const MONGODB_URL =
-    "mongodb+srv://paperforge_user:anEBNxhTnYAQs3mZ@paperforge.c9txst2.mongodb.net/?appName=PaperForge";
-const DATABASE_NAME =
+const MONGODB_URL = process.env.MONGODB_URL;const DATABASE_NAME =
     "PaperForge";
 
 const COLLECTION_NAME =
