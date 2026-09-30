@@ -1,13 +1,15 @@
+const dns = require("dns");
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
 const { MongoClient } = require("mongodb");
 
-// ===============================
 // MONGODB CONFIGURATION
-// ===============================
+const MONGO_URI = "mongodb+srv://paperforge_user:anEBNxhTnYAQs3mZ@paperforge.c9txst2.mongodb.net/?appName=PaperForge";
+const DATABASE_NAME = "PaperForge";
 
-const MONGO_URI = "mongodb://127.0.0.1:27017";
-const DATABASE_NAME = "question_paper_generator";
-
-const client = new MongoClient(MONGO_URI);
+const client = new MongoClient(MONGO_URI, {
+    tls: true
+});
 
 // ===============================
 // QUESTION DATA

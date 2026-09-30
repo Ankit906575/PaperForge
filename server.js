@@ -1,17 +1,19 @@
 const express = require("express");
 const path = require("path");
 const crypto = require("crypto");
+const dns = require("dns");
 const { MongoClient, ObjectId } = require("mongodb");
+
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const app = express();
 
 const PORT = 3000;
 
 const MONGODB_URL =
-    "mongodb://127.0.0.1:27017";
-
+    "mongodb+srv://paperforge_user:anEBNxhTnYAQs3mZ@paperforge.c9txst2.mongodb.net/?appName=PaperForge";
 const DATABASE_NAME =
-    "question_paper_generator";
+    "PaperForge";
 
 const COLLECTION_NAME =
     "questions";
@@ -256,11 +258,13 @@ async function connectDatabase() {
 
     mongoClient =
         new MongoClient(
-            MONGODB_URL
+            MONGODB_URL,
+            {
+                tls: true
+            }
         );
 
     await mongoClient.connect();
-
     console.log(
         "MongoDB Connected Successfully!"
     );
